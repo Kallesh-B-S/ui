@@ -1,0 +1,57 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="logo-container">
+            <img src="images/logo.jpeg" alt="USCIB Logo" class="logo">
+        </div>
+
+        <h2 class="welcome-title">Welcome to USCIB Carnet Portal!</h2>
+        <h3 class="subtitle">ATA Carnet: Your Passport for Duty-Free Global Trade</h3>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" required>
+                <mat-icon matSuffix>person</mat-icon>
+                <mat-error *ngIf="loginForm.get('username')?.errors?.['required']">
+                    Username is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" required>
+                <mat-icon matSuffix>lock</mat-icon>
+                <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">
+                    Password is required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="forgot-password">
+                <a href="#" class="forgot-link">Forgot your password?</a>
+            </div>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+                Sign In
+            </button>
+
+            <mat-error class="error-message" *ngIf="errorMessage !== ''">
+                {{errorMessage}}
+            </mat-error>
+        </form>
+    </div>
+
+    <div class="info-section">
+        <h3>ATA Carnet</h3>
+        <p>
+            Also known as the "Merchandise Passport," is an international customs document that simplifies temporary
+            exports to over 79 countries and territories.
+            It allows businesses to explore new markets, showcase products at trade shows, and attend global conferences
+            without paying duties or taxes.
+        </p>
+        <p>
+            It simplifies customs procedures for the temporary movement of goods and allows goods to
+            enter Customs territories of the ATA Carnet system free of customs duties and taxes for up to
+            one year.
+        </p>
+    </div>
+</div>

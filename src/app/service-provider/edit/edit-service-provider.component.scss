@@ -1,0 +1,20 @@
+@import 'colors';
+
+.page-header {
+    margin: 0.5rem 0px;
+    color: $primary-color;
+    font-weight: 500;
+}
+
+.service-provider-action-buttons {
+    padding-bottom: 20px;
+}
+
+.service-provider-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-provider-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+    margin-left: 8px;
+}

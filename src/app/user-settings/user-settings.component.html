@@ -1,0 +1,34 @@
+<div class="settings-container">
+    <h3>User Preferences</h3>
+    <div class="settings-section">
+        <h5>Table Settings</h5>
+
+        <div class="table-setting">
+
+            <form [formGroup]="userPreferencesForm" class="details-form" *ngIf="!isLoading">
+
+                <div class="two-column-grid">
+                    <!-- Row 1 -->
+                    <div class="label">Items per page:</div>
+                    <div class="control">
+                        <mat-form-field appearance="outline" class="pageSize">
+                            <mat-select formControlName="pageSize" required>
+                                <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                                    {{ size }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="f['pageSize'].errors?.['required']">
+                                Page Size is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button mat-button (click)="resetToDefaults()">Reset to Defaults</button>
+                    <button mat-raised-button color="primary" (click)="saveSettings()" type="submit"
+                        [disabled]="userPreferencesForm.invalid">Save Preferences</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

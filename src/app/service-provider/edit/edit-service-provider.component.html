@@ -1,0 +1,76 @@
+<h2 *ngIf="this.serviceProviderName" class="page-header">Manage {{this.serviceProviderName}}</h2>
+
+<div class="service-provider-action-buttons">
+    <button mat-button (click)="accordion().openAll()">Expand All</button>
+    <button mat-button (click)="accordion().closeAll()">Collapse All</button>
+</div>
+<mat-accordion class="service-provider-headers-align" multi>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Basic Details </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <app-basic-details [spid]="spid" [isEditMode]="isEditMode"
+            (serviceProviderName)="onServiceProviderNameUpdate($event)"></app-basic-details>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Contacts </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-contacts [spid]="spid" [userPreferences]="userPreferences"></app-contacts>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Carnet Sequence </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-carnet-sequence [spid]="spid" [isEditMode]="isEditMode"
+            [userPreferences]="userPreferences"></app-carnet-sequence>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Carnet Fee & Commission Setup </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-carnet-fee [spid]="spid" [isEditMode]="isEditMode" [userPreferences]="userPreferences"></app-carnet-fee>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Basic Fee Setup</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-basic-fee [spid]="spid" [isEditMode]="isEditMode" [userPreferences]="userPreferences"></app-basic-fee>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Counterfoil Setup</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-counterfoil-fee [spid]="spid" [isEditMode]="isEditMode"
+            [userPreferences]="userPreferences"></app-counterfoil-fee>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Continuation Sheet Fee Setup </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-continuation-sheet-fee [spid]="spid" [isEditMode]="isEditMode"
+            [userPreferences]="userPreferences"></app-continuation-sheet-fee>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Expedited Fee Setup</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-expedited-fee [spid]="spid" [isEditMode]="isEditMode"
+            [userPreferences]="userPreferences"></app-expedited-fee>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Security Deposit </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-security-deposit [spid]="spid" [isEditMode]="isEditMode"
+            [userPreferences]="userPreferences"></app-security-deposit>
+    </mat-expansion-panel>
+</mat-accordion>

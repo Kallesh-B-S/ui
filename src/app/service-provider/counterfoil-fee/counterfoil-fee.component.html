@@ -1,0 +1,207 @@
+<div class="counterfoil-container">
+    <div class="actions-bar">
+        <button mat-raised-button color="primary" (click)="addNewCounterfoil()">
+            <mat-icon>add</mat-icon> Add New Counterfoil
+        </button>
+    </div>
+
+    <div class="table-container mat-elevation-z8">
+        <div class="loading-shade" *ngIf="isLoading">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Customer Type Column -->
+            <ng-container matColumnDef="customerType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Type</th>
+                <td mat-cell *matCellDef="let item">
+                    {{ getOptionLabel(customerTypes, item.customerType) }}
+                </td>
+            </ng-container>
+
+            <!-- Carnet Type Column -->
+            <ng-container matColumnDef="carnetType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Carnet Type</th>
+                <td mat-cell *matCellDef="let item">
+                    {{ getOptionLabel(carnetTypes, item.carnetType) }}
+                </td>
+            </ng-container>
+
+            <!-- Start Sets Column -->
+            <ng-container matColumnDef="startSets">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Sets</th>
+                <td mat-cell *matCellDef="let item">{{ item.startSets }}</td>
+            </ng-container>
+
+            <!-- End Sets Column -->
+            <ng-container matColumnDef="endSets">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>End Sets</th>
+                <td mat-cell *matCellDef="let item">{{ item.endSets }}</td>
+            </ng-container>
+
+            <!-- Rate Column -->
+            <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
+                <td mat-cell *matCellDef="let item">{{ item.rate | currency }}</td>
+            </ng-container>
+
+            <!-- Effective Date Column -->
+            <ng-container matColumnDef="effectiveDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Effective Date</th>
+                <td mat-cell *matCellDef="let item">
+                    {{ item.effectiveDate | date:'mediumDate':'UTC' }}
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let item">
+                    <button mat-icon-button color="primary" (click)="editCounterfoil(item)" matTooltip="Edit">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <!-- <button mat-icon-button color="warn" (click)="deleteCounterfoil(item.id)" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button> -->
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr matNoDataRow *matNoDataRow>
+                <td [colSpan]="displayedColumns.length" class="no-data-message">
+                    <mat-icon>info</mat-icon>
+                    <span>No counterfoil setups available</span>
+                </td>
+            </tr>
+        </table>
+
+        <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[userPreferences.pageSize!]"
+            [hidePageSize]="true" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- Counterfoil Form -->
+    <div class="form-container" *ngIf="showForm">
+        <form [formGroup]="counterfoilForm" (ngSubmit)="saveCounterfoil()">
+            <div class="form-header">
+                <h3>{{ isEditing ? 'Edit Counterfoil Setup' : 'Add New Counterfoil Setup' }}</h3>
+            </div>
+
+            <div class="form-row">
+                <mat-label>Customer Type</mat-label>
+                <mat-radio-group formControlName="customerType" required class="horizontal-group">
+                    <mat-radio-button *ngFor="let type of customerTypes" [value]="type.value" class="radio-button">
+                        {{ type.label }}
+                    </mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="counterfoilForm.get('customerType')?.errors?.['required']">
+                    Customer type is required
+                </mat-error>
+            </div>
+
+            <div class="form-row">
+                <mat-label>Carnet Type</mat-label>
+                <mat-radio-group formControlName="carnetType" required class="horizontal-group">
+                    <mat-radio-button *ngFor="let type of carnetTypes" [value]="type.value" class="radio-button">
+                        {{ type.label }}
+                    </mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="counterfoilForm.get('carnetType')?.errors?.['required']">
+                    Carnet type is required
+                </mat-error>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Start Sets</mat-label>
+                    <input matInput formControlName="startSets" type="number" required>
+                    <mat-error *ngIf="counterfoilForm.get('startSets')?.errors?.['required']">
+                        Start sets is required
+                    </mat-error>
+                    <mat-error *ngIf="counterfoilForm.get('startSets')?.errors?.['pattern']">
+                        Must be a valid number
+                    </mat-error>
+                    <mat-error *ngIf="counterfoilForm.get('startSets')?.errors?.['min']">
+                        Must be greater than 0
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>End Sets</mat-label>
+                    <input matInput formControlName="endSets" type="number" required>
+                    <mat-error *ngIf="counterfoilForm.get('endSets')?.errors?.['required']">
+                        End sets is required
+                    </mat-error>
+                    <mat-error *ngIf="counterfoilForm.get('endSets')?.errors?.['pattern']">
+                        Must be a valid number
+                    </mat-error>
+                    <mat-error *ngIf="counterfoilForm.get('endSets')?.errors?.['min']">
+                        Must be greater than 0
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <mat-error *ngIf="counterfoilForm?.errors?.['invalidRange']" class="form-error">
+                End sets must be greater than start sets
+            </mat-error>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Rate</mat-label>
+                    <input matInput formControlName="rate" type="number" step="1" required>
+                    <span class="dollar-prefix" matPrefix>$&nbsp;</span>
+                    <mat-error *ngIf="counterfoilForm.get('rate')?.errors?.['required']">
+                        Rate is required
+                    </mat-error>
+                    <mat-error *ngIf="counterfoilForm.get('rate')?.errors?.['pattern']">
+                        Must be a valid dollar amount
+                    </mat-error>
+                    <mat-error *ngIf="counterfoilForm.get('rate')?.errors?.['min']">
+                        Must be 0 or greater
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="effectiveDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="counterfoilForm.get('effectiveDate')?.errors?.['required']">
+                        Effective date is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="isEditing" class="readonly-section">
+                <div class="readonly-fields">
+                    <div class="field-column">
+                        <!-- Last Changed By -->
+                        <div class="readonly-field">
+                            <label>Last Changed By</label>
+                            <div class="readonly-value">
+                                {{readOnlyFields.lastChangedBy || 'N/A'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-column">
+                        <!-- Last Changed Date -->
+                        <div class="readonly-field">
+                            <label>Last Changed Date</label>
+                            <div class="readonly-value">
+                                {{(readOnlyFields.lastChangedDate | date:'mediumDate':'UTC') || 'N/A'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="counterfoilForm.invalid">
+                    {{ isEditing ? 'Update' : 'Save' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

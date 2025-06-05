@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Compact density for all Material components
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((density: -3,
+    ));
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

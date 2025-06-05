@@ -1,0 +1,58 @@
+@import 'colors';
+
+.footer {
+    background-color: $background-header;
+    padding: 8px;
+    border-top: 1px solid $divider-color;
+    backdrop-filter: blur(10px);
+    background-color: rgba($background-header, 0.9);
+
+    /* Fixed footer styles */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    /* Ensure footer stays above content */
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 24px;
+
+        a {
+            color: $text-secondary;
+            text-decoration: none;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: $primary-color;
+            }
+        }
+    }
+
+    .copyright {
+        color: $text-secondary;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        padding: 16px;
+
+        .footer-links {
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+    }
+}

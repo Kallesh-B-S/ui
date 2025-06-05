@@ -1,0 +1,205 @@
+<div class="expedited-fee-container">
+    <div class="actions-bar">
+        <button mat-raised-button color="primary" (click)="addNewFee()">
+            <mat-icon>add</mat-icon> Add New Expedited Fee
+        </button>
+    </div>
+
+    <div class="table-container mat-elevation-z8">
+        <div class="loading-shade" *ngIf="isLoading">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Customer Type Column -->
+            <ng-container matColumnDef="customerType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Type</th>
+                <td mat-cell *matCellDef="let fee">{{ getCustomerTypeLabel(fee.customerType) }}</td>
+            </ng-container>
+
+            <!-- Delivery Type Column -->
+            <ng-container matColumnDef="deliveryType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Delivery Type</th>
+                <td mat-cell *matCellDef="let fee">{{ getDeliveryLabel(fee.deliveryType) }}</td>
+            </ng-container>
+
+            <!-- Time Column -->
+            <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+                <td mat-cell *matCellDef="let fee">{{ getTimeLabel(fee.startTime, fee.endTime, fee.timeZone)}}</td>
+            </ng-container>
+
+            <!-- Fee Column -->
+            <ng-container matColumnDef="fee">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fee</th>
+                <td mat-cell *matCellDef="let fee">{{ fee.fee | currency }}</td>
+            </ng-container>
+
+            <!-- Effective Date Column -->
+            <ng-container matColumnDef="effectiveDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Effective Date</th>
+                <td mat-cell *matCellDef="let fee">{{ fee.effectiveDate | date:'mediumDate':'UTC' }}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let fee">
+                    <button mat-icon-button color="primary" (click)="editFee(fee)" matTooltip="Edit">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <!-- <button mat-icon-button color="warn" (click)="deleteFee(fee.expeditedFeeId)" matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button> -->
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr matNoDataRow *matNoDataRow>
+                <td [colSpan]="displayedColumns.length" class="no-data-message">
+                    <mat-icon>info</mat-icon>
+                    <span>No expedited fees available</span>
+                </td>
+            </tr>
+        </table>
+
+        <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[userPreferences.pageSize!]"
+            [hidePageSize]="true" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- Fee Form -->
+    <div class="form-container" *ngIf="showForm">
+        <form [formGroup]="feeForm" (ngSubmit)="saveFee()">
+            <div class="form-header">
+                <h3>{{ isEditing ? 'Edit Expedited Fee' : 'Add New Expedited Fee' }}</h3>
+            </div>
+
+            <div class="form-row">
+                <mat-label>Customer Type</mat-label>
+                <mat-radio-group formControlName="customerType" required class="horizontal-group">
+                    <mat-radio-button *ngFor="let type of customerTypes" [value]="type.value" class="radio-button">
+                        {{ type.label }}
+                    </mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="feeForm.get('customerType')?.errors?.['required']">
+                    Customer type is required
+                </mat-error>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Delivery Type</mat-label>
+                    <mat-select formControlName="deliveryType" required>
+                        <mat-option *ngFor="let type of deliveryTypes" [value]="type.value">
+                            {{ type.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="feeForm.get('deliveryType')?.errors?.['required']">
+                        Delivery type is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Start Time</mat-label>
+                    <input matInput formControlName="startTime" required min="0" max="24" type="number" step="1">
+                    <mat-error *ngIf="feeForm.get('startTime')?.errors?.['required']">
+                        Start Time is required
+                    </mat-error>
+                    <mat-error *ngIf="feeForm.get('startTime')?.errors?.['min']">
+                        Start Time must be greater than zero
+                    </mat-error>
+                    <mat-error *ngIf="feeForm.get('startTime')?.errors?.['max']">
+                        Start Time must be less than 24 hours
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>End Time</mat-label>
+                    <input matInput formControlName="endTime" min="0" max="24" type="number" step="1">
+                    <mat-error *ngIf="feeForm.get('endTime')?.errors?.['min']">
+                        End Time must be greater than zero
+                    </mat-error>
+                    <mat-error *ngIf="feeForm.get('endTime')?.errors?.['max']">
+                        End Time must be less than 24 hours
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <mat-error *ngIf="feeForm?.errors?.['invalidRange']" class="form-error">
+                End time must be greater than start time
+            </mat-error>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Time Zone</mat-label>
+                    <mat-select formControlName="timeZone" required>
+                        <mat-option *ngFor="let zone of timeZones" [value]="zone.value">
+                            {{ zone.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="feeForm.get('timeZone')?.errors?.['required']">
+                        Time zone is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fee</mat-label>
+                    <input matInput type="number" formControlName="fee" required min="0" step="1">
+                    <span class="dollar-prefix" matPrefix>$&nbsp;</span>
+                    <mat-error *ngIf="feeForm.get('fee')?.errors?.['required']">
+                        Fee is required
+                    </mat-error>
+                    <mat-error *ngIf="feeForm.get('fee')?.errors?.['min']">
+                        Fee must be positive
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Effective Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="effectiveDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="feeForm.get('effectiveDate')?.errors?.['required']">
+                        Effective date is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="isEditing" class="readonly-section">
+                <div class="readonly-fields">
+                    <div class="field-column">
+                        <!-- Last Changed By -->
+                        <div class="readonly-field">
+                            <label>Last Changed By</label>
+                            <div class="readonly-value">
+                                {{readOnlyFields.lastChangedBy || 'N/A'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-column">
+                        <!-- Last Changed Date -->
+                        <div class="readonly-field">
+                            <label>Last Changed Date</label>
+                            <div class="readonly-value">
+                                {{(readOnlyFields.lastChangedDate | date:'mediumDate':'UTC') || 'N/A'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="feeForm.invalid">
+                    {{ isEditing ? 'Update' : 'Save' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

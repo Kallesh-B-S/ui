@@ -1,0 +1,87 @@
+<div class="service-provider-container">
+    <mat-stepper orientation="vertical" [linear]="true" (selectionChange)="onStepChange($event)"
+        [selectedIndex]="currentStep">
+
+        <!-- Basic Details Step -->
+        <mat-step [completed]="basicDetailsCompleted">
+            <ng-template matStepLabel>Basic Details</ng-template>
+
+            <app-basic-details [isEditMode]="isEditMode" (spidCreated)="onBasicDetailsSaved($event)">
+            </app-basic-details>
+        </mat-step>
+
+        <!-- Contacts Step -->
+        <mat-step [completed]="contactsCompleted" [editable]="!!serviceProviderId && basicDetailsCompleted">
+            <ng-template matStepLabel>Contacts</ng-template>
+
+            <app-contacts *ngIf="serviceProviderId" [spid]="serviceProviderId" (hasContacts)="onContactsSaved($event)"
+                [userPreferences]="userPreferences">
+            </app-contacts>
+        </mat-step>
+
+        <!-- Carnet Sequence Step -->
+        <mat-step [editable]="!!serviceProviderId && contactsCompleted" [completed]="carnetSequenceCompleted">
+            <ng-template matStepLabel>Carnet Sequence</ng-template>
+
+            <app-carnet-sequence *ngIf="serviceProviderId" [spid]="serviceProviderId"
+                (hasCarnetSequence)="onCarnetSequenceSaved($event)"
+                [userPreferences]="userPreferences"></app-carnet-sequence>
+        </mat-step>
+
+        <!-- Fees & Commission Step -->
+        <mat-step [editable]="!!serviceProviderId && carnetSequenceCompleted"
+            [completed]="feeCommissionCompleted && carnetSequenceCompleted">
+            <ng-template matStepLabel>Carnet Fee & Commission Setup</ng-template>
+
+            <app-carnet-fee *ngIf="serviceProviderId" [spid]="serviceProviderId"
+                (hasFeeCommissions)="onFeeCommissionSaved($event)" [userPreferences]="userPreferences"></app-carnet-fee>
+        </mat-step>
+
+        <!-- Basic Fee Step -->
+        <mat-step [editable]="!!serviceProviderId && feeCommissionCompleted"
+            [completed]="basicFeeCompleted && feeCommissionCompleted">
+            <ng-template matStepLabel>Basic Fee Setup</ng-template>
+
+            <app-basic-fee *ngIf="serviceProviderId" [spid]="serviceProviderId" (hasBasicFees)="onBasicFeeSaved($event)"
+                [userPreferences]="userPreferences"></app-basic-fee>
+        </mat-step>
+
+        <!-- Counterfoil Fee Step -->
+        <mat-step [editable]="!!serviceProviderId && basicFeeCompleted" [completed]="counterfoilFeeCompleted">
+            <ng-template matStepLabel>Counterfoil Setup</ng-template>
+
+            <app-counterfoil-fee *ngIf="serviceProviderId" [spid]="serviceProviderId"
+                (hasCounterFoilFee)="onCounterfoilFeeSaved($event)"
+                [userPreferences]="userPreferences"></app-counterfoil-fee>
+        </mat-step>
+
+        <!-- Continuation Sheet Fee Step -->
+        <mat-step [editable]="!!serviceProviderId && counterfoilFeeCompleted"
+            [completed]="continuationSheetFeeCompleted">
+            <ng-template matStepLabel>Continuation Sheet Fee Setup</ng-template>
+
+            <app-continuation-sheet-fee *ngIf="serviceProviderId" [spid]="serviceProviderId"
+                (hasContinuationSheetFee)="onContinuationSheetFeeSaved($event)"
+                [userPreferences]="userPreferences"></app-continuation-sheet-fee>
+        </mat-step>
+
+        <!-- Expedited Fee Step -->
+        <mat-step [editable]="!!serviceProviderId && continuationSheetFeeCompleted" [completed]="expeditedFeeCompleted">
+            <ng-template matStepLabel>Expedited Fee Setup</ng-template>
+
+            <app-expedited-fee *ngIf="serviceProviderId" [spid]="serviceProviderId"
+                (hasExpeditedFees)="onExpeditedFeeSaved($event)"
+                [userPreferences]="userPreferences"></app-expedited-fee>
+        </mat-step>
+
+        <!-- Security Deposit Step -->
+        <mat-step [editable]="!!serviceProviderId && expeditedFeeCompleted" [completed]="securityDepositCompleted">
+            <ng-template matStepLabel>Security Deposit</ng-template>
+
+            <app-security-deposit *ngIf="serviceProviderId" [spid]="serviceProviderId"
+                (hasSecurityDeposits)="onSecurityDepositSaved($event)"
+                [userPreferences]="userPreferences"></app-security-deposit>
+        </mat-step>
+
+    </mat-stepper>
+</div>

@@ -1,0 +1,35 @@
+<nav class="navbar">
+    <div class="navbar-brand">
+        <img src="images/logo-white.png" alt="App Logo" class="logo">
+        <span class="app-title">USCIB Carnet Portal</span>
+    </div>
+
+    <div class="navbar-menu">
+        <a class="nav-link" (click)="navigateTo('/home')">Home</a>
+        <a class="nav-link" (click)="navigateTo('/manageusers')">Users</a>
+        <a class="nav-link" (click)="navigateTo('/regions')">Regions</a>
+
+        <div class="profile-container">
+            <button mat-icon-button (click)="toggleProfileMenu()" class="profile-button">
+                <mat-icon>account_circle</mat-icon>
+            </button>
+
+            <div class="profile-menu" *ngIf="showProfileMenu">
+                <div class="profile-info">
+                    <mat-icon>email</mat-icon>
+                    <span>{{ userEmail }}</span>
+                </div>
+
+                <button mat-menu-item (click)="navigateTo('/usersettings')">
+                    <mat-icon>settings</mat-icon>
+                    <span>User Settings</span>
+                </button>
+
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>

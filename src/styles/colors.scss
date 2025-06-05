@@ -1,0 +1,69 @@
+// Color palette
+$primary-color: #597b7c;
+$primary-light: #e8eaf6;
+$primary-dark: #303f9f;
+$accent-color: #ff4081;
+$background-card: #ffffff;
+$background-header: #f5f5f5;
+$background-chip: #f0f0f0;
+$divider-color: rgba(0, 0, 0, 0.12);
+$text-primary: rgba(0, 0, 0, 0.87);
+$text-secondary: rgba(0, 0, 0, 0.54);
+$text-hint: rgba(0, 0, 0, 0.38);
+$icon-color: rgba(0, 0, 0, 0.54);
+
+// _colors.scss
+
+// // Primary Colors
+// $primary-color: #2c3e50;          // Dark blue for navbar
+// $primary-light: #3498db;         // Lighter blue for accents
+// $primary-dark: #1a252f;          // Darker blue for hover states
+
+// // Accent Colors
+// $accent-color: #e74c3c;          // Red for important actions
+// $secondary-accent: #f39c12;      // Orange for secondary actions
+
+// // Background Colors
+// $background-card: #ffffff;       // Card backgrounds
+// $background-header: #f8f9fa;     // Light gray for header/footer
+// $background-light: #f5f7fa;      // Very light gray for subtle backgrounds
+// $background-dark: #2c3e50;       // Dark background (matches primary)
+
+// // Text Colors
+// $text-primary: #333333;          // Main text color
+// $text-secondary: #666666;        // Secondary text
+// $text-light: #ffffff;            // Text on dark backgrounds
+// $text-hint: #999999;             // Disabled/hint text
+// $text-error: #e74c3c;            // Error messages
+
+// // Functional Colors
+// $success-color: #2ecc71;         // Green for success states
+// $warning-color: #f39c12;         // Yellow/orange for warnings
+// $error-color: #e74c3c;           // Red for errors
+
+// // Border/Divider Colors
+// $border-color: #e0e0e0;          // Light borders
+// $divider-color: rgba(0, 0, 0, 0.12); // Material-like divider
+
+// // Social Media Colors
+// $facebook-blue: #3b5998;
+// $twitter-blue: #1da1f2;
+// $linkedin-blue: #0077b5;
+// $youtube-red: #ff0000;
+
+// // Shadows
+// $shadow-color: rgba(0, 0, 0, 0.2);
+
+// // Navbar Specific
+// $navbar-bg: $primary-color;
+// $navbar-text: $text-light;
+// $navbar-hover: lighten($primary-color, 10%);
+
+// // Footer Specific
+// $footer-bg: $background-header;
+// $footer-text: $text-secondary;
+// $footer-link-hover: $primary-light;
+
+// // Button States
+// $button-hover: rgba(0, 0, 0, 0.04);
+// $button-active: rgba(0, 0, 0, 0.1);

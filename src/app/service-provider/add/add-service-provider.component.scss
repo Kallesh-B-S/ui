@@ -1,0 +1,25 @@
+@import 'colors';
+
+.service-provider-container {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 16px;
+
+    mat-stepper {
+        background-color: transparent;
+    }
+
+    .step-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-provider-container {
+        padding: 8px;
+        margin: 16px auto;
+    }
+}

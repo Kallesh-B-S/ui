@@ -1,0 +1,125 @@
+@import 'colors';
+@import 'mixins';
+
+.basic-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+
+    .details-card {
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        background: none;
+        box-shadow: none;
+
+        .loading-shade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .details-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            align-items: start;
+
+            // Specific field sizing
+            .company-name {
+                grid-column: span 2;
+            }
+
+            .lookup-code {
+                grid-column: span 1;
+            }
+
+            .address-line-1,
+            .address-line-2 {
+                grid-column: span 3;
+            }
+
+            .city {
+                grid-column: span 1;
+            }
+
+            .country {
+                grid-column: span 1;
+            }
+
+            .state {
+                grid-column: span 1;
+            }
+
+            .zip {
+                grid-column: span 1;
+            }
+
+            .issuing-region,
+            .replacement-region {
+                grid-column: span 1;
+            }
+
+            .cargo-surety,
+            .cargo-policy,
+            .bond-surety {
+                grid-column: span 1;
+            }
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+
+        mat-form-field {
+            width: 100%;
+
+            mat-icon[matSuffix] {
+                color: $icon-color;
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 960px) {
+    .basic-details-container {
+        .details-card {
+            .form-row {
+                grid-template-columns: 1fr;
+
+                .company-name,
+                .address-line-1,
+                .address-line-2,
+                .lookup-code,
+                .city,
+                .country,
+                .state,
+                .zip,
+                .issuing-region,
+                .replacement-region,
+                .cargo-surety,
+                .cargo-policy,
+                .bond-surety {
+                    grid-column: span 1;
+                }
+            }
+        }
+    }
+}
