@@ -4,8 +4,7 @@
 @use '@angular/material' as mat;
 
 html {
-  @include mat.theme((density: -3,
-    ));
+  @include mat.theme((density: -3));
 }
 
 html,
