@@ -15,7 +15,7 @@ export class ContactService {
   constructor(private http: HttpClient, private userService: UserService) { }
 
   getContactsById(id: number): Observable<Contact[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetSPAllContacts?p_SPid=${id}`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetSPAllContacts/${id}`).pipe(
       map(response => this.mapToContacts(response)));
   }
 
@@ -79,7 +79,7 @@ export class ContactService {
   }
 
   deleteContact(spContactId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${this.apiDb}/InactivateSPContact?p_spcontactid=${spContactId}`, null);
+    return this.http.post(`${this.apiUrl}/${this.apiDb}/InactivateSPContact/${spContactId}`, null);
   }
 
 }

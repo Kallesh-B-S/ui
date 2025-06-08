@@ -15,7 +15,7 @@ export class BasicDetailService {
   constructor(private http: HttpClient, private userService: UserService) { }
 
   getBasicDetailsById(id: number): BasicDetail | any {
-    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetSelectedServiceprovider?p_spid=${id}`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetSelectedServiceprovider/${id}`).pipe(
       filter(response => response.length > 0),
       map(response => this.mapToBasicDetail(response?.[0])));
   }
