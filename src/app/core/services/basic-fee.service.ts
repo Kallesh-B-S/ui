@@ -16,7 +16,7 @@ export class BasicFeeService {
   constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
 
   getBasicFees(spid: number): Observable<BasicFee[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetBasicFeeRates?P_SPID=${spid}&P_ACTIVE_INACTIVE=ACTIVE`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetBasicFeeRates/${spid}/ACTIVE`).pipe(
       map(response => this.mapToBasicFees(response)));
   }
 

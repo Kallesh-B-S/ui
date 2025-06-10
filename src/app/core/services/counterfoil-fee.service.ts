@@ -16,7 +16,7 @@ export class CounterfoilFeeService {
   constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
 
   getCounterfoils(spid: number): Observable<CounterfoilFee[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetCfFeeRates?P_SPID=${spid}&P_ACTIVE_INACTIVE=ACTIVE`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetCfFeeRates/${spid}/ACTIVE`).pipe(
       map(response => this.mapToCounterFoilFee(response)));
   }
 

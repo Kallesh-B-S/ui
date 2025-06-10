@@ -16,7 +16,7 @@ export class SecurityDepositService {
   constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
 
   getSecurityDeposits(spid: number): Observable<SecurityDeposit[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetBondRates?P_SPID=${spid}&P_ACTIVE_INACTIVE=ACTIVE`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetBondRates/${spid}/ACTIVE`).pipe(
       map(response => this.mapToSecurityDeposit(response)));
   }
 

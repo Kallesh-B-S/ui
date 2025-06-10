@@ -16,7 +16,7 @@ export class ExpeditedFeeService {
   constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
 
   getExpeditedFees(spid: number): Observable<ExpeditedFee[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetEfFeeRates?P_SPID=${spid}&P_ACTIVE_INACTIVE=ACTIVE`).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetEfFeeRates/${spid}/ACTIVE`).pipe(
       map(response => this.mapToExpeditedFee(response)));
   }
 
