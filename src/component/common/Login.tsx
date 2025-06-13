@@ -1,6 +1,27 @@
+import type { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../store";
+import { loginUser } from "../../store/authSlice";
 
-const Login = () => {
+
+
+const Login = (
+    { setLoggedIn, setLogo, setLoggedInEmail, loggedInEmail }
+        : {
+            setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
+            setLogo: React.Dispatch<React.SetStateAction<string>>,
+            setLoggedInEmail: React.Dispatch<React.SetStateAction<string>>,
+            loggedInEmail: string
+
+        }
+) => {
+
+    const navigate = useNavigate();
+    // const dispatch = useDispatch<AppDispatch>();
+
     const {
         register,
         handleSubmit,
@@ -10,7 +31,52 @@ const Login = () => {
     const onSubmit = (data: any) => {
         console.log("Form submitted:", data);
         // Handle authentication here
+        handleLogin(data);
+
     };
+
+
+    const setEmail = async (email: string) => {
+        console.log('setting email ....');
+        
+        setLoggedInEmail(email);
+    }
+
+    const handleLogin = async (data: any) => {
+
+        // dispatch(loginUser({ username: data.username, password: data.password }))
+        //     .unwrap()
+        //     .then(() => navigate("/home"))
+        //     .catch(() => {
+        //         alert("Login failed")
+        //     });
+
+        const options1: AxiosRequestConfig = {
+            method: 'POST',
+            url: 'http://localhost:3006/login',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: { P_EMAILADDR: data.username, P_PASSWORD: data.password },
+            withCredentials: true
+        };
+
+        try {
+            const { data } = await axios.request(options1);
+            console.log(data);
+            if (data.statusCode === 200) {
+                await setEmail(data.email)
+                console.log(data.email);
+                
+                setLoggedIn(true);
+                navigate('/home');
+            }
+        } catch (error: any) {
+            console.log("Error while logging........");
+            console.log(error.message);
+            console.log("Error while logging........");
+        }
+    }
 
     return (
         <div className="flex min-h-[85vh] bg-gray-500 mx-[5%] mt-[1.6%]">
