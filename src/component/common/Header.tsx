@@ -2,84 +2,55 @@ import { useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { FaUserCircle, FaSignOutAlt, FaEnvelope } from 'react-icons/fa';
-import type { AxiosRequestConfig } from 'axios';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../store/authSlice';
+import type { AppDispatch, RootState } from '../../store';
+import { useSelector } from 'react-redux';
+import { StyleManager } from '../../../styleManager';
 
-const Header = (
-  {
-    logoUrl,
-    userEmail,
-    navigateTo,
-    logout,
-    setLoggedIn,
-    setLoggedInEmail
-  }: {
-    logoUrl: any,
-    userEmail: any,
-    navigateTo: any,
-    logout: any,
-    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
-    setLoggedInEmail: React.Dispatch<React.SetStateAction<string>>
-  }) => {
+const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const homeState = useSelector((state: RootState) => state.home)
 
-  const [logo, setLogo] = useState(logoUrl);
+
 
   const toggleProfileMenu = () => {
     setShowProfileMenu(prev => !prev);
   };
 
   const handleLogOut = async () => {
-
-    const options1: AxiosRequestConfig = {
-      method: 'POST',
-      url: 'http://localhost:3006/logout',
-      withCredentials: true
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // }
-    };
-
-    try {
-      const { data } = await axios.request(options1);
-      console.log(data);
-      if (data.statusCode === 200) {
-        alert("Logout successfully");
-        setLoggedInEmail('')
-        setLoggedIn(false);
-      }
-    } catch (error: any) {
-      // alert("Failed to Logout successfully");
-      setLoggedIn(false)
-    }
+    await StyleManager.removeStyle('theme');
+    dispatch(logoutUser())
   }
 
+
   return (
-    <nav className="flex justify-between items-center h-16 px-6 md:px-12 bg-primary-container text-primary shadow-md relative z-50">
+    <nav className="flex justify-between items-center h-16 px-6 md:px-12 bg-[var(--mat-sys-primary-container)] text-primary shadow-md relative z-50">
       <div className="flex items-center gap-4">
-        {logoUrl && <img src={logo} alt="App Logo" className="h-10" />}
+        {homeState.data?.LOGONAME && <img src={`/images/logos/${homeState.data.LOGONAME}`} alt="App Logo" className="h-10" />}
         {/* <span className="text-lg font-medium hidden md:inline">USCIB Carnet Portal</span> */}
       </div>
 
-      <div className="flex items-center gap-4 md:gap-6">
-        <button onClick={() => navigateTo('home')} className="text-sm font-medium hover:underline">Home</button>
+      <div className={`flex items-center gap-4 md:gap-6 text-[var(--mat-sys-primary)]`}>
+        <button onClick={() => navigate('home')} className="text-sm font-medium hover:underline">Home</button>
 
         <Dropdown label="Users">
-          <MenuItem onClick={() => navigateTo('usersettings')}>User Settings</MenuItem>
+          <MenuItem onClick={() => navigate('usersettings')}>User Settings</MenuItem>
         </Dropdown>
 
         <Dropdown label="Maintenance">
-          <MenuItem onClick={() => navigateTo('preparer')}>Preparer</MenuItem>
-          <MenuItem onClick={() => navigateTo('holder')}>Holder</MenuItem>
-          <MenuItem onClick={() => navigateTo('carnet')}>Carnet</MenuItem>
+          <MenuItem onClick={() => navigate('preparer')}>Preparer</MenuItem>
+          <MenuItem onClick={() => navigate('holder')}>Holder</MenuItem>
+          <MenuItem onClick={() => navigate('carnet')}>Carnet</MenuItem>
         </Dropdown>
 
         <Dropdown label="Admin">
-          <MenuItem onClick={() => navigateTo('sequence')}>Sequence</MenuItem>
-          <MenuItem onClick={() => navigateTo('regions')}>Regions</MenuItem>
-          <MenuItem onClick={() => navigateTo('users')}>Users</MenuItem>
+          <MenuItem onClick={() => navigate('sequence')}>Sequence</MenuItem>
+          <MenuItem onClick={() => navigate('regions')}>Regions</MenuItem>
+          <MenuItem onClick={() => navigate('users')}>Users</MenuItem>
         </Dropdown>
 
         {/* Profile dropdown */}
@@ -92,7 +63,7 @@ const Header = (
             <div className="absolute right-0 mt-2 w-52 rounded-md bg-secondary-container shadow-lg z-50 overflow-hidden">
               <div className="flex items-center gap-2 px-4 py-2 bg-white text-secondary border-b">
                 <FaEnvelope />
-                <span className="text-sm truncate">{userEmail}</span>
+                <span className="text-sm truncate">{'userEmail'}</span>
               </div>
               <button
                 onClick={handleLogOut}

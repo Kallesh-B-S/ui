@@ -1,57 +1,46 @@
-import { useEffect } from "react"
+import { useSelector } from "react-redux"
 import Header from "../component/common/Header"
-import { useNavigate } from "react-router-dom";
-import type { AxiosRequestConfig } from "axios";
-import axios from "axios";
+import type { AppDispatch, RootState } from "../store"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { getUserDetails } from "../store/homeSlice"
+import BeautifulTable from "../component/common/BeautifulTable"
+import BeautifulTable2 from "../component/common/BeautifulTable2"
+import { ThemeService } from '../../themeService';
 
-const Home = (
-    { loggedIn, setLoggedIn, logo, setLoggedInEmail, setLogo, loggedInEmail }:
-        {
-            loggedIn: boolean,
-            setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
-            logo: string,
-            setLoggedInEmail: React.Dispatch<React.SetStateAction<string>>,
-            setLogo: React.Dispatch<React.SetStateAction<string>>,
-            loggedInEmail: string
-        }) => {
-
-    const navigate = useNavigate();
-
+const Home = () => {
+    const authState = useSelector((state: RootState) => state.auth)
+    const homeState = useSelector((state: RootState) => state.home)
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        console.log(loggedIn);
-
-        if (!loggedIn) {
-            navigate('/login');
+        if (authState.loggedIn === false) {
+            navigate('/login')
         }
-    }, [loggedIn])
+    }, [authState.loggedIn, navigate])
 
     useEffect(() => {
-        const fetchUserDetails = async () => {
-            const options1: AxiosRequestConfig = {
-                method: 'GET',
-                url: `http://localhost:3006/GetUserDetails/${loggedInEmail}`,
-                withCredentials: true
-            };
+        if (authState.user?.email) {
+            dispatch(getUserDetails(authState.user.email))
+        }
+    }, [])
 
-            try {
-                const { data } = await axios.request(options1);
-                console.log(data);
-                if (data.userDetails.LOGONAME) {
-                    setLogo(data.userDetails.LOGONAME);
-                }
-            } catch (error: any) {
-                console.log("Error while logging........");
-                console.log(error.message);
-                console.log("Error while logging........");
-            }
-        };
+    useEffect(() => {
+        console.log("tableData : ", homeState.tableData);
 
-        fetchUserDetails();
-    }, [loggedInEmail]); // Include dependencies like loggedInEmail
+    }, [homeState.tableData])
 
+    useEffect(() => {
+        if (homeState.data?.THEMENAME) {
+            ThemeService.setTheme(homeState.data.THEMENAME ?? 'default'); // Switch theme by setting the CSS file
+        }
+    }, [homeState.data])
     return (
         <div>
-            <Header logoUrl={`/images/logos/${logo}`} userEmail={''} navigateTo={''} logout={''} setLoggedIn={setLoggedIn} setLoggedInEmail={setLoggedInEmail} />
+            <Header />
+            {/* <BeautifulTable /> */}
+            <BeautifulTable2 defaultData={homeState.tableData && homeState.tableData.length > 0 ? homeState.tableData : []} />
         </div>
     )
 }
