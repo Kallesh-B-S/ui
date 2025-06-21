@@ -27,7 +27,7 @@ export const loginUser = createAsyncThunk(
         try {
             const options1: AxiosRequestConfig = {
                 method: 'POST',
-                url: 'http://localhost:3006/login',
+                url: 'https://dev.alphaomegainfosys.com/test-api/login',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -49,7 +49,7 @@ export const logoutUser = createAsyncThunk(
         try {
             const options1: AxiosRequestConfig = {
                 method: 'POST',
-                url: 'http://localhost:3006/logout',
+                url: 'https://dev.alphaomegainfosys.com/test-api/logout',
                 withCredentials: true
             };
 

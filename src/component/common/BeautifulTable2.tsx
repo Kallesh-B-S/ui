@@ -21,16 +21,16 @@ interface Person {
 
 const columns: ColumnDef<Person>[] = [
     {
-        header: 'Name',
-        accessorKey: 'name',
+        header: 'REGIONNAME',
+        accessorKey: 'REGIONNAME',
     },
     {
-        header: 'Age',
-        accessorKey: 'age',
+        header: 'REGION',
+        accessorKey: 'REGION',
     },
     {
-        header: 'Email',
-        accessorKey: 'email',
+        header: 'REGIONID',
+        accessorKey: 'REGIONID',
     },
 ];
 

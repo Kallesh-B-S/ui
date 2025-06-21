@@ -22,7 +22,7 @@ export const getUserDetails = createAsyncThunk(
         try {
             const options1: AxiosRequestConfig = {
                 method: 'GET',
-                url: `http://localhost:3006/getUserDetails/${email}`,
+                url: `https://dev.alphaomegainfosys.com/test-api/oracle/GetUserDetails/${email}`,
                 withCredentials: true,
             };
 
@@ -39,7 +39,7 @@ export const getBasicDemoTableData = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
         const options1: AxiosRequestConfig = {
             method: 'GET',
-            url: `http://localhost:3006/GetSp`,
+            url: `https://dev.alphaomegainfosys.com/test-api/oracle/GetRegions`,
             withCredentials: true,
         };
         try {
@@ -71,7 +71,7 @@ export const refreshTokens = createAsyncThunk(
     async (axiosRequestConfigC: AxiosRequestConfig, { dispatch, rejectWithValue }) => {
         const options1: AxiosRequestConfig = {
             method: 'GET',
-            url: `http://localhost:3006/ref-tok`,
+            url: `https://dev.alphaomegainfosys.com/test-api/refresh-tokens`,
             withCredentials: true,
         };
         try {
