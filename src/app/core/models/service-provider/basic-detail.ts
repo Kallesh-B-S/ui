@@ -13,4 +13,5 @@ export interface BasicDetail {
     zip: string;
     issuingRegion: string;
     replacementRegion: string;
+    appid: string;
 }

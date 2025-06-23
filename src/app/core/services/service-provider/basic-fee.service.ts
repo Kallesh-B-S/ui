@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from './user.service';
-import { BasicFee } from '../models/service-provider/basic-fee';
 import { map, Observable } from 'rxjs';
-import { CommonService } from './common.service';
+import { UserService } from '../common/user.service';
+import { BasicFee } from '../../models/service-provider/basic-fee';
+import { CommonService } from '../common/common.service';
 
 @Injectable({
   providedIn: 'root'

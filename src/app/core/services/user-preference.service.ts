@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CookieHelperService } from './cookie.service';
 import { DEFAULT_USER_PREFERENCES, UserPreferences } from '../models/user-preference';
+import { CookieHelperService } from './common/cookie.service';
 
 @Injectable({
     providedIn: 'root'

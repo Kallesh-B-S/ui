@@ -5,13 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import { NotificationService } from '../../core/services/notification.service';
+import { NotificationService } from '../../core/services/common/notification.service';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
 import { CounterfoilFee } from '../../core/models/service-provider/counterfoil-fee';
 import { CustomPaginator } from '../../shared/custom-paginator';
-import { CounterfoilFeeService } from '../../core/services/counterfoil-fee.service';
-import { ApiErrorHandlerService } from '../../core/services/api-error-handler.service';
+import { CounterfoilFeeService } from '../../core/services/service-provider/counterfoil-fee.service';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
 
 @Component({

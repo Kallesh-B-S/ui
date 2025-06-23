@@ -5,6 +5,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { Router } from '@angular/router';
 import { CarnetStatus } from '../../core/models/carnet-status';
+import { NavigationService } from '../../core/services/common/navigation.service';
 
 @Component({
   selector: 'app-chart',
@@ -17,10 +18,10 @@ export class ChartComponent {
   @Input() carnetStatuses: CarnetStatus[] = [];
   @Output() carnetStatusData = new EventEmitter<any>();
 
-  constructor(private router: Router) { }
+  constructor(private navigationService: NavigationService) { }
 
   navigateToManageProvider(spid: number): void {
-    this.router.navigate(['/service-provider', spid]);
+    this.navigationService.navigate(['/service-provider', spid]);
   }
 
   public chartClicked(event: any, chartIndex: number): void {

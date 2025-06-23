@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BasicFeeService } from '../../core/services/basic-fee.service';
-import { NotificationService } from '../../core/services/notification.service';
+import { BasicFeeService } from '../../core/services/service-provider/basic-fee.service';
+import { NotificationService } from '../../core/services/common/notification.service';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,10 +9,9 @@ import { AngularMaterialModule } from '../../shared/module/angular-material.modu
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { CustomPaginator } from '../../shared/custom-paginator';
 import { forkJoin } from 'rxjs';
-import { ApiErrorHandlerService } from '../../core/services/api-error-handler.service';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
 
 @Component({

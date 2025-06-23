@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../core/services/auth.service';
+import { AuthService } from '../core/services/common/auth.service';
+import { NavigationService } from '../core/services/common/navigation.service';
 import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from '../shared/module/angular-material.module';
-import { UserService } from '../core/services/user.service';
+import { User } from '../core/models/user';
+import { UserService } from '../core/services/common/user.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
-    private router: Router
+    private navigationService: NavigationService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -31,7 +32,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     if (this.userService.isLoggedIn()) {
-      this.router.navigate(['/home']);
+      this.navigationService.navigate(['/home']);
     }
   }
 
@@ -44,12 +45,11 @@ export class LoginComponent {
 
       this.authService.login(username, password).subscribe({
         next: (response) => {
-          this.isLoading = false;
-          if (response?.msg) {
-            this.userService.setUser(username);
-            this.router.navigate(['/home']);
+          if (response?.message) {
+            this.userService.setUser(response?.email);
+            this.setUserData();
           } else {
-            this.errorMessage = response?.error ?? response?.msg;
+            this.errorMessage = response?.error ?? response?.message;
           }
         },
         error: (error) => {
@@ -59,5 +59,25 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+
+  setUserData() {
+
+    this.userService.setUserDetails().subscribe({
+      next: (data: User) => {
+        if (data?.userDetails) {
+          this.navigationService.navigate(['home']);
+        } else {
+          this.errorMessage = "User doesn't have permissions.";
+          this.isLoading = false;
+        }
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        this.errorMessage = "User doesn't have permissions.";
+        console.error('Error retrieving app data:', error);
+      }
+    });
   }
 }

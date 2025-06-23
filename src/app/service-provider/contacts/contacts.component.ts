@@ -6,13 +6,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
-import { NotificationService } from '../../core/services/notification.service';
+import { NotificationService } from '../../core/services/common/notification.service';
 import { Contact } from '../../core/models/service-provider/contact';
 import { PhonePipe } from '../../shared/pipes/phone.pipe';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../../shared/custom-paginator';
-import { ContactService } from '../../core/services/contact.service';
-import { ApiErrorHandlerService } from '../../core/services/api-error-handler.service';
+import { ContactService } from '../../core/services/service-provider/contact.service';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
 
 @Component({

@@ -6,17 +6,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
-import { NotificationService } from '../../core/services/notification.service';
+import { NotificationService } from '../../core/services/common/notification.service';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../../shared/custom-paginator';
 import { ExpeditedFee } from '../../core/models/service-provider/expedited-fee';
 import { DeliveryType } from '../../core/models/delivery-type';
 import { TimeZone } from '../../core/models/timezone';
-import { CommonService } from '../../core/services/common.service';
+import { CommonService } from '../../core/services/common/common.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ExpeditedFeeService } from '../../core/services/expedited-fee.service';
-import { ApiErrorHandlerService } from '../../core/services/api-error-handler.service';
-import { TimeFormatService } from '../../core/services/timeformat.service';
+import { ExpeditedFeeService } from '../../core/services/service-provider/expedited-fee.service';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { TimeFormatService } from '../../core/services/common/timeformat.service';
 import { UserPreferences } from '../../core/models/user-preference';
 
 @Component({

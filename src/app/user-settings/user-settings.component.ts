@@ -3,7 +3,7 @@ import { UserPreferencesService } from '../core/services/user-preference.service
 import { UserPreferences } from '../core/models/user-preference';
 import { AngularMaterialModule } from '../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from '../core/services/notification.service';
+import { NotificationService } from '../core/services/common/notification.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
-import { ContinuationSheetFee } from '../models/service-provider/continuation-sheet-fee';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { CommonService } from './common.service';
+import { environment } from '../../../../environments/environment';
+import { ContinuationSheetFee } from '../../models/service-provider/continuation-sheet-fee';
+import { CommonService } from '../common/common.service';
+import { UserService } from '../common/user.service';
 
 @Injectable({
   providedIn: 'root'

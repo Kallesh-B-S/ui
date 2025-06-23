@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
-import { BasicDetail } from '../models/service-provider/basic-detail';
+import { BasicDetail } from '../../models/service-provider/basic-detail';
 import { filter, map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
+import { UserService } from '../common/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,8 @@ export class BasicDetailService {
       zip: basicDetails.ZIP,
       cargoSurety: basicDetails.CARGOSURETY,
       cargoPolicyNo: basicDetails.CARGOPOLICYNO,
-      bondSurety: basicDetails.BONDSURETY
+      bondSurety: basicDetails.BONDSURETY,
+      appid: basicDetails.ENCURLKEY
     };
   }
 

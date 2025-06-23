@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { CarnetFee } from '../models/service-provider/carnet-fee';
-import { CommonService } from './common.service';
+import { environment } from '../../../../environments/environment';
+import { CarnetFee } from '../../models/service-provider/carnet-fee';
+import { CommonService } from '../common/common.service';
+import { UserService } from '../common/user.service';
 
 @Injectable({
   providedIn: 'root'

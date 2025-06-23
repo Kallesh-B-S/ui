@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
-import { SecurityDeposit } from '../models/service-provider/security-deposit';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { CommonService } from './common.service';
+import { environment } from '../../../../environments/environment';
+import { SecurityDeposit } from '../../models/service-provider/security-deposit';
+import { CommonService } from '../common/common.service';
+import { UserService } from '../common/user.service';
 
 @Injectable({
   providedIn: 'root'

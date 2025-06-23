@@ -3,8 +3,6 @@ import { HomeService } from '../core/services/home.service';
 import { AngularMaterialModule } from '../shared/module/angular-material.module';
 import { ChartComponent } from './chart/chart.component';
 import { RouterLink } from '@angular/router';
-import { NotificationService } from '../core/services/notification.service';
-import { ApiErrorHandlerService } from '../core/services/api-error-handler.service';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,8 +10,10 @@ import { UserPreferences } from '../core/models/user-preference';
 import { UserPreferencesService } from '../core/services/user-preference.service';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../shared/custom-paginator';
-import { CommonService } from '../core/services/common.service';
 import { CarnetStatus } from '../core/models/carnet-status';
+import { ApiErrorHandlerService } from '../core/services/common/api-error-handler.service';
+import { NotificationService } from '../core/services/common/notification.service';
+import { CommonService } from '../core/services/common/common.service';
 
 @Component({
   selector: 'app-home',

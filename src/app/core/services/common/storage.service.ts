@@ -21,6 +21,24 @@ export class StorageService {
     return null;
   }
 
+  get<T>(key: string): T | null {
+    try {
+      const item = sessionStorage.getItem(key);
+      return item ? JSON.parse(item) as T : null;
+    } catch (e) {
+      console.error(`Error getting ${key} from session storage`, e);
+      return null;
+    }
+  }
+
+  set(key: string, value: any): void {
+    try {
+      sessionStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error(`Error setting ${key} in session storage`, e);
+    }
+  }
+
   removeItem(key: string): void {
     sessionStorage.removeItem(key);
   }

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { UserService } from './user.service';
 import { map, Observable } from 'rxjs';
-import { CarnetSequence } from '../models/service-provider/carnet-sequence';
+import { environment } from '../../../../environments/environment';
+import { CarnetSequence } from '../../models/service-provider/carnet-sequence';
+import { UserService } from '../common/user.service';
 
 @Injectable({
   providedIn: 'root'
