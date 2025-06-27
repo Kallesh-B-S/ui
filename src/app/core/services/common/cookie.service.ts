@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CookieService as NgxCookieService } from 'ngx-cookie-service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CookieHelperService {
-    constructor(private ngxCookieService: NgxCookieService) { }
+    private ngxCookieService = inject(NgxCookieService);
 
     /**
      * Get a value from cookie

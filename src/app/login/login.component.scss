@@ -1,4 +1,4 @@
-@import 'colors';
+@use 'colors' as colors;
 
 .login-container {
     display: flex;
@@ -26,7 +26,7 @@
 
         .welcome-title {
             text-align: center;
-            color: $primary-color;
+            color: colors.$primary-color;
             margin-bottom: 0.5rem;
         }
 
@@ -76,7 +76,7 @@
     .info-section {
         flex: 1;
         padding: 4rem;
-        background-color: $primary-color;
+        background-color: colors.$primary-color;
         color: white;
         display: flex;
         flex-direction: column;

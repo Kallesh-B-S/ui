@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -13,7 +13,9 @@ export class ContinuationSheetFeeService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
+  private commonService = inject(CommonService);
 
   getContinuationSheets(spid: number): Observable<ContinuationSheetFee[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetCsFeeRates/${spid}/ACTIVE`).pipe(

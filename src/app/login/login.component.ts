@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../core/services/common/auth.service';
 import { NavigationService } from '../core/services/common/navigation.service';
@@ -18,12 +18,12 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private userService: UserService,
-    private navigationService: NavigationService
-  ) {
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private navigationService = inject(NavigationService);
+  private fb = inject(FormBuilder);
+
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]

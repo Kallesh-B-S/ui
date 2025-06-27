@@ -1,4 +1,4 @@
-import { afterNextRender, Component, viewChild } from '@angular/core';
+import { afterNextRender, Component, inject, viewChild } from '@angular/core';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { MatAccordion } from '@angular/material/expansion';
 import { BasicDetailsComponent } from '../basic-details/basic-details.component';
@@ -12,8 +12,8 @@ import { ContinuationSheetFeeComponent } from "../continuation-sheet-fee/continu
 import { ExpeditedFeeComponent } from "../expedited-fee/expedited-fee.component";
 import { SecurityDepositComponent } from "../security-deposit/security-deposit.component";
 import { UserPreferences } from '../../core/models/user-preference';
-import { UserPreferencesService } from '../../core/services/user-preference.service';
 import { CommonModule } from '@angular/common';
+import { UserPreferencesService } from '../../core/services/user-preference.service';
 
 @Component({
   selector: 'app-edit-service-provider',
@@ -28,7 +28,9 @@ export class EditServiceProviderComponent {
   serviceProviderName: string | null = null;
   userPreferences: UserPreferences;
 
-  constructor(private route: ActivatedRoute, private userPrefenceService: UserPreferencesService) {
+  private route = inject(ActivatedRoute);
+
+  constructor(userPrefenceService: UserPreferencesService) {
     this.userPreferences = userPrefenceService.getPreferences();
     afterNextRender(() => {
       // Open all panels

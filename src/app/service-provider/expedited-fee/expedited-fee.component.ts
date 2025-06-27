@@ -1,23 +1,21 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
-import { NotificationService } from '../../core/services/common/notification.service';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../../shared/custom-paginator';
 import { ExpeditedFee } from '../../core/models/service-provider/expedited-fee';
 import { DeliveryType } from '../../core/models/delivery-type';
 import { TimeZone } from '../../core/models/timezone';
-import { CommonService } from '../../core/services/common/common.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ExpeditedFeeService } from '../../core/services/service-provider/expedited-fee.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
-import { TimeFormatService } from '../../core/services/common/timeformat.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { CommonService } from '../../core/services/common/common.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { TimeFormatService } from '../../core/services/common/timeformat.service';
+import { ExpeditedFeeService } from '../../core/services/service-provider/expedited-fee.service';
 
 @Component({
   selector: 'app-expedited-fee',
@@ -58,15 +56,14 @@ export class ExpeditedFeeComponent implements OnInit, OnDestroy {
   deliveryTypes: DeliveryType[] = [];
   timeZones: TimeZone[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private expeditedFeeService: ExpeditedFeeService,
-    private notificationService: NotificationService,
-    private commonService: CommonService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService,
-    private timeFormatHelper: TimeFormatService
-  ) {
+  private fb = inject(FormBuilder);
+  private expeditedFeeService = inject(ExpeditedFeeService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+  private commonService = inject(CommonService);
+  private timeFormatHelper = inject(TimeFormatService);
+
+  constructor() {
     this.feeForm = this.fb.group({
       customerType: ['PREPARER', Validators.required],
       deliveryType: ['', Validators.required],

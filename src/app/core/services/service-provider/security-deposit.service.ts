@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { SecurityDeposit } from '../../models/service-provider/security-deposit';
@@ -13,7 +13,9 @@ export class SecurityDepositService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
+  private commonService = inject(CommonService);
 
   getSecurityDeposits(spid: number): Observable<SecurityDeposit[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetBondRates/${spid}/ACTIVE`).pipe(

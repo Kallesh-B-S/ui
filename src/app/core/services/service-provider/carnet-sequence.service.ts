@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { CarnetSequence } from '../../models/service-provider/carnet-sequence';
-import { UserService } from '../common/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class CarnetSequenceService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  private http = inject(HttpClient);
 
   getCarnetSequenceById(id: number): Observable<CarnetSequence[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetCarnetSequence/${id}`).pipe(

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,14 +6,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
-import { NotificationService } from '../../core/services/common/notification.service';
 import { Contact } from '../../core/models/service-provider/contact';
 import { PhonePipe } from '../../shared/pipes/phone.pipe';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../../shared/custom-paginator';
-import { ContactService } from '../../core/services/service-provider/contact.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { ContactService } from '../../core/services/service-provider/contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -45,13 +45,13 @@ export class ContactsComponent implements OnInit {
   @Input() userPreferences: UserPreferences = {};
   @Output() hasContacts = new EventEmitter<boolean>();
 
-  constructor(
-    private fb: FormBuilder,
-    private contactService: ContactService,
-    private notificationService: NotificationService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private contactService = inject(ContactService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+  private dialog = inject(MatDialog);
+
+  constructor() {
     this.contactForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UserService } from './common/user.service';
@@ -11,7 +11,8 @@ export class HomeService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
 
   getCarnetSummaryData(): Observable<any> {
     const userid = this.userService.getUser();

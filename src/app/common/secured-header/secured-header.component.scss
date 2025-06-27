@@ -1,5 +1,4 @@
-@import 'colors';
-@import 'mixins';
+@use 'colors' as colors;
 
 .navbar {
     display: flex;
@@ -7,9 +6,9 @@
     align-items: center;
     padding: 0 24px;
     height: 64px;
-    background-color: $primary-color;
+    background-color: colors.$primary-color;
     color: white;
-    @include box-shadow(2);
+    box-shadow: var(--mat-sys-level2);
     position: relative;
     z-index: 100; // Higher than footer's z-index
 
@@ -59,7 +58,7 @@
             top: 48px;
             background-color: white;
             border-radius: 4px;
-            @include box-shadow(3);
+            box-shadow: var(--mat-sys-level3);
             min-width: 200px;
             overflow: hidden;
             z-index: 101;
@@ -69,11 +68,11 @@
                 align-items: center;
                 gap: 8px;
                 padding: 12px 16px;
-                border-bottom: 1px solid $divider-color;
-                color: $text-primary;
+                border-bottom: 1px solid colors.$divider-color;
+                color: colors.$text-primary;
 
                 mat-icon {
-                    color: $text-secondary;
+                    color: colors.$text-secondary;
                 }
             }
 
@@ -83,12 +82,12 @@
                 align-items: center;
                 gap: 8px;
                 padding: 8px 16px;
-                color: $text-primary;
+                color: colors.$text-primary;
                 border: none;
                 cursor: pointer;
 
                 mat-icon {
-                    color: $text-secondary;
+                    color: colors.$text-secondary;
                 }
             }
         }

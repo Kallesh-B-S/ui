@@ -1,18 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import { NotificationService } from '../../core/services/common/notification.service';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
 import { of } from 'rxjs';
 import { CustomPaginator } from '../../shared/custom-paginator';
-import { ContinuationSheetFeeService } from '../../core/services/service-provider/continuation-sheet-fee.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { ContinuationSheetFeeService } from '../../core/services/service-provider/continuation-sheet-fee.service';
 
 @Component({
   selector: 'app-continuation-sheet-fee',
@@ -55,13 +53,12 @@ export class ContinuationSheetFeeComponent implements OnInit {
   @Input() userPreferences!: UserPreferences;
   @Output() hasContinuationSheetFee = new EventEmitter<boolean>();
 
-  constructor(
-    private fb: FormBuilder,
-    private continuationSheetFeeService: ContinuationSheetFeeService,
-    private notificationService: NotificationService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private continuationSheetFeeService = inject(ContinuationSheetFeeService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+
+  constructor() {
     this.continuationSheetForm = this.fb.group({
       customerType: ['PREPARER', Validators.required],
       carnetType: ['ORIGINAL', Validators.required],

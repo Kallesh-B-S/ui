@@ -7,7 +7,6 @@ import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 export class StorageService {
   private readonly platformId = inject(PLATFORM_ID);
 
-  constructor() { }
   setItem(key: string, value: string): void {
     sessionStorage.setItem(key, value);
   }

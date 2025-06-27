@@ -1,5 +1,4 @@
-@import 'colors';
-@import 'mixins';
+@use 'colors' as colors;
 
 .dashboard-chart-container {
     padding: 24px 0px;
@@ -37,7 +36,7 @@
                 margin: 0;
                 font-size: 16px;
                 font-weight: 400;
-                color: $primary-color;
+                color: colors.$primary-color;
             }
 
             .edit-icon {
@@ -45,7 +44,7 @@
                 transition: color 0.2s ease;
 
                 &:hover {
-                    color: $primary-color;
+                    color: colors.$primary-color;
                 }
 
                 mat-icon {

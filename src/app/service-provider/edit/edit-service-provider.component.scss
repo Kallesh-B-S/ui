@@ -1,8 +1,8 @@
-@import 'colors';
+@use 'colors' as colors;
 
 .page-header {
     margin: 0.5rem 0px;
-    color: $primary-color;
+    color: colors.$primary-color;
     font-weight: 500;
 }
 

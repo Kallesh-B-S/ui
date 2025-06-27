@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AddServiceProviderComponent } from './service-provider/add/add-service-provider.component';
 import { EditServiceProviderComponent } from './service-provider/edit/edit-service-provider.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';

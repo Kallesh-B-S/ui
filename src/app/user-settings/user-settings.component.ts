@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { UserPreferencesService } from '../core/services/user-preference.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserPreferences } from '../core/models/user-preference';
 import { AngularMaterialModule } from '../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from '../core/services/common/notification.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NotificationService } from '../core/services/common/notification.service';
+import { UserPreferencesService } from '../core/services/user-preference.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -14,16 +14,16 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class UserSettingsComponent implements OnInit {
   pageSizeOptions = [5, 10, 25, 50];
-  
+
   userPreferences: UserPreferences = {};
   userPreferencesForm: FormGroup;
   isLoading = true;
 
-  constructor(
-    private fb: FormBuilder,
-    private preferencesService: UserPreferencesService,
-    private notificationService: NotificationService
-  ) {
+  private fb = inject(FormBuilder);
+  private preferencesService = inject(UserPreferencesService);
+  private notificationService = inject(NotificationService);
+
+  constructor() {
     this.userPreferencesForm = this.fb.group({
       pageSize: ['']
     });

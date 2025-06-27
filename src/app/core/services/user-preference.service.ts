@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DEFAULT_USER_PREFERENCES, UserPreferences } from '../models/user-preference';
 import { CookieHelperService } from './common/cookie.service';
 
@@ -8,7 +8,7 @@ import { CookieHelperService } from './common/cookie.service';
 export class UserPreferencesService {
     private readonly COOKIE_KEY = 'user_preferences';
 
-    constructor(private cookieService: CookieHelperService) { }
+    private cookieService = inject(CookieHelperService);
 
     getPreferences(): UserPreferences {
         const preferences = this.cookieService.get<UserPreferences>(this.COOKIE_KEY);

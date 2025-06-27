@@ -1,20 +1,19 @@
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
-import { NotificationService } from '../../core/services/common/notification.service';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../../shared/custom-paginator';
-import { CommonService } from '../../core/services/common/common.service';
 import { CarnetFee } from '../../core/models/service-provider/carnet-fee';
 import { FeeType } from '../../core/models/fee-type';
-import { CarnetFeeService } from '../../core/services/service-provider/carnet-fee.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { CommonService } from '../../core/services/common/common.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { CarnetFeeService } from '../../core/services/service-provider/carnet-fee.service';
 
 @Component({
   selector: 'app-carnet-fee',
@@ -47,14 +46,13 @@ export class CarnetFeeComponent implements OnInit {
   @Input() spid: number = 0;
   @Output() hasFeeCommissions = new EventEmitter<boolean>();
 
-  constructor(
-    private fb: FormBuilder,
-    private feeCommissionService: CarnetFeeService,
-    private commonService: CommonService,
-    private notificationService: NotificationService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private feeCommissionService = inject(CarnetFeeService);
+  private commonService = inject(CommonService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+
+  constructor() {
     this.feeCommissionForm = this.fb.group({
       feeType: ['', Validators.required],
       commissionRate: [0, [Validators.required]],

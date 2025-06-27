@@ -11,8 +11,8 @@ import { CounterfoilFeeComponent } from '../counterfoil-fee/counterfoil-fee.comp
 import { ExpeditedFeeComponent } from '../expedited-fee/expedited-fee.component';
 import { SecurityDepositComponent } from '../security-deposit/security-deposit.component';
 import { ContinuationSheetFeeComponent } from "../continuation-sheet-fee/continuation-sheet-fee.component";
-import { UserPreferencesService } from '../../core/services/user-preference.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { UserPreferencesService } from '../../core/services/user-preference.service';
 
 @Component({
   selector: 'app-add-service-provider',

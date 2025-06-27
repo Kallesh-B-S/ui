@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -6,16 +6,16 @@ import { BasicDetail } from '../../core/models/service-provider/basic-detail';
 import { Country } from '../../core/models/country';
 import { Region } from '../../core/models/region';
 import { State } from '../../core/models/state';
-import { CommonService } from '../../core/services/common/common.service';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from '../../core/services/common/notification.service';
 import { ZipCodeValidator } from '../../shared/validators/zipcode-validator';
-import { BasicDetailService } from '../../core/services/service-provider/basic-detail.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { BondSurety } from '../../core/models/bond-surety';
 import { CargoSurety } from '../../core/models/cargo-surety';
 import { CargoPolicy } from '../../core/models/cargo-policy';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { CommonService } from '../../core/services/common/common.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { BasicDetailService } from '../../core/services/service-provider/basic-detail.service';
 
 @Component({
   selector: 'app-basic-details',
@@ -42,13 +42,13 @@ export class BasicDetailsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private fb: FormBuilder,
-    private commonService: CommonService,
-    private basicDetailService: BasicDetailService,
-    private notificationService: NotificationService,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private commonService = inject(CommonService);
+  private basicDetailService = inject(BasicDetailService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+
+  constructor() {
     this.basicDetailsForm = this.createForm();
   }
 
@@ -281,7 +281,7 @@ export class BasicDetailsComponent implements OnInit, OnDestroy {
       error: (error) => {
         let errorMessage = this.errorHandler.handleApiError(error, `Failed to ${this.isEditMode ? 'update' : 'add'} basic details`);
         this.notificationService.showError(errorMessage);
-        console.error('Error saving contact:', error);
+        console.error('Error saving basic details:', error);
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -13,7 +13,9 @@ export class CarnetFeeService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
+  private commonService = inject(CommonService);
 
   getFeeCommissions(spid: number): Observable<CarnetFee[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetFeeComm/${spid}/ACTIVE`).pipe(

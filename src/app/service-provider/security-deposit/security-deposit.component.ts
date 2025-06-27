@@ -1,20 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
-import { NotificationService } from '../../core/services/common/notification.service';
 import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../../shared/custom-paginator';
 import { Country } from '../../core/models/country';
-import { CommonService } from '../../core/services/common/common.service';
 import { SecurityDeposit } from '../../core/models/service-provider/security-deposit';
-import { SecurityDepositService } from '../../core/services/service-provider/security-deposit.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { CommonService } from '../../core/services/common/common.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { SecurityDepositService } from '../../core/services/service-provider/security-deposit.service';
 
 @Component({
   selector: 'app-security-deposit',
@@ -58,14 +56,13 @@ export class SecurityDepositComponent implements OnInit {
     { value: 'N', label: 'No' }
   ];
 
-  constructor(
-    private fb: FormBuilder,
-    private securityDepositService: SecurityDepositService,
-    private commonService: CommonService,
-    private notificationService: NotificationService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private securityDepositService = inject(SecurityDepositService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+  private commonService = inject(CommonService);
+
+  constructor() {
     this.depositForm = this.fb.group({
       holderType: ['CORP', Validators.required],
       uscibMember: ['Y', Validators.required],

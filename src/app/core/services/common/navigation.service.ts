@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { StorageService } from './storage.service';
 
 
 @Injectable({
@@ -9,10 +8,10 @@ import { StorageService } from './storage.service';
 })
 export class NavigationService {
 
-//  private readonly USER_APPID_KEY = 'CurrentAppId';
+  //private readonly USER_APPID_KEY = 'CurrentAppId';
 
-  constructor(private router: Router,
-    private location: Location) { }
+  private router = inject(Router);
+  private location = inject(Location);
 
   /* Not applicable for this app   
   setCurrentAppId(appId: string): void {
@@ -33,7 +32,7 @@ export class NavigationService {
   }
 
   navigateByUrl(url: string, extras?: any): void {
-    // const currentAppId = this.getCurrentAppId();
+    //const currentAppId = this.getCurrentAppId();
 
     // Ensure URL starts with current appId
     const fullUrl = `/${url.startsWith('/') ? url : `/${url}`}`;

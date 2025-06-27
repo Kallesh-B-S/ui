@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
@@ -13,7 +13,9 @@ export class BasicFeeService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService, private commonService: CommonService) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
+  private commonService = inject(CommonService);
 
   getBasicFees(spid: number): Observable<BasicFee[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetBasicFeeRates/${spid}/ACTIVE`).pipe(
@@ -28,7 +30,7 @@ export class BasicFeeService {
       fees: item.FEES,
       effectiveDate: item.EFFDATE,
       createdBy: item.CREATEDBY || null,
-      dateCreated: item.DATECREATED || null      
+      dateCreated: item.DATECREATED || null
     }));
   }
 

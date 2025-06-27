@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { HomeService } from '../core/services/home.service';
 import { AngularMaterialModule } from '../shared/module/angular-material.module';
 import { ChartComponent } from './chart/chart.component';
@@ -12,8 +12,8 @@ import { CommonModule } from '@angular/common';
 import { CustomPaginator } from '../shared/custom-paginator';
 import { CarnetStatus } from '../core/models/carnet-status';
 import { ApiErrorHandlerService } from '../core/services/common/api-error-handler.service';
-import { NotificationService } from '../core/services/common/notification.service';
 import { CommonService } from '../core/services/common/common.service';
+import { NotificationService } from '../core/services/common/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -43,13 +43,12 @@ export class HomeComponent {
 
   displayedColumns: string[] = ['applicationName', 'holderName', 'carnetNumber', 'usSets', 'foreignSets', 'transitSets', 'carnetValue', 'issueDate', 'expiryDate', 'orderType', 'carnetStatus'];
 
+  private homeService = inject(HomeService);
+  private errorHandler = inject(ApiErrorHandlerService);
+  private notificationService = inject(NotificationService);
+  private commonService = inject(CommonService);
 
-  constructor(
-    private homeService: HomeService,
-    private errorHandler: ApiErrorHandlerService,
-    private notificationService: NotificationService,
-    userPrefenceService: UserPreferencesService,
-    private commonService: CommonService) {
+  constructor(userPrefenceService: UserPreferencesService) {
     this.userPreferences = userPrefenceService.getPreferences();
   }
 

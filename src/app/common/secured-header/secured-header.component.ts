@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../core/services/common/user.service';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
@@ -15,11 +15,9 @@ export class SecuredHeaderComponent implements OnInit {
   userEmail: string = '';
   showProfileMenu: boolean = false;
 
-  constructor(
-    private userService: UserService,
-    private authService: AuthService,
-    private navigationService: NavigationService
-  ) { }
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+  private navigationService = inject(NavigationService);
 
   ngOnInit(): void {
     this.userEmail = this.userService.getSafeUser();

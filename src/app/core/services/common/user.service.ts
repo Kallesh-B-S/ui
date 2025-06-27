@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { afterNextRender, inject, Injectable, signal } from '@angular/core';
 import { StorageService } from './storage.service';
 import { BehaviorSubject, map, Observable, of, Subject, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -21,7 +21,22 @@ export class UserService {
 
   private userLoggedInSubject = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient, private storageService: StorageService) { }
+  private http = inject(HttpClient);
+  private storageService = inject(StorageService);
+
+  constructor() {
+    afterNextRender(() => {
+      // Initialize user details from storage if available
+      const userDetails = this.getUserDetails();
+      if (userDetails) {
+        this.userDetailsSignal.set(userDetails);
+      }
+
+      // Check if user is logged in
+      const userEmail = this.getUser();
+      this.userLoggedInSubject.next(!!userEmail);
+    });
+  }
 
   watchUser(): Observable<boolean> {
     return this.userLoggedInSubject.asObservable();

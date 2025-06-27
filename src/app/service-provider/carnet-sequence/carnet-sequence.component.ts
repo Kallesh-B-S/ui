@@ -1,21 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CarnetSequence } from '../../core/models/service-provider/carnet-sequence';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../core/services/common/notification.service';
-import { CommonService } from '../../core/services/common/common.service';
 import { Region } from '../../core/models/region';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { CommonModule } from '@angular/common';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 import { CustomPaginator } from '../../shared/custom-paginator';
-import { CarnetSequenceService } from '../../core/services/service-provider/carnet-sequence.service';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { CommonService } from '../../core/services/common/common.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { CarnetSequenceService } from '../../core/services/service-provider/carnet-sequence.service';
 
 @Component({
   selector: 'app-carnet-sequence',
@@ -50,14 +48,13 @@ export class CarnetSequenceComponent implements OnInit {
   sequences: CarnetSequence[] = [];
   regions: Region[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private carnetSequenceService: CarnetSequenceService,
-    private notificationService: NotificationService,
-    private commonService: CommonService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private carnetSequenceService = inject(CarnetSequenceService);
+  private commonService = inject(CommonService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+
+  constructor() {
     this.sequenceForm = this.fb.group({
       carnetType: ['ORIGINAL', Validators.required],
       region: ['', Validators.required],

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { Region } from '../../models/region';
 import { State } from '../../models/state';
@@ -20,7 +20,7 @@ export class CommonService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
 
   getCountries(spid: number = 0): Observable<Country[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetParamValues?P_PARAMTYPE=002&P_SPID=0`).pipe(

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Contact } from '../../models/service-provider/contact';
@@ -12,7 +12,8 @@ export class ContactService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
 
   getContactsById(id: number): Observable<Contact[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetSPAllContacts/${id}`).pipe(

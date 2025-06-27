@@ -1,5 +1,5 @@
 // auth.interceptor.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private requestQueue: { request: HttpRequest<any>, next: HttpHandler }[] = [];
 
-  constructor(private authService: AuthService) { }
+  private authService = inject(AuthService);
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

@@ -1,6 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { BasicFeeService } from '../../core/services/service-provider/basic-fee.service';
-import { NotificationService } from '../../core/services/common/notification.service';
+import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,11 +6,12 @@ import { BasicFee } from '../../core/models/service-provider/basic-fee';
 import { AngularMaterialModule } from '../../shared/module/angular-material.module';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { CustomPaginator } from '../../shared/custom-paginator';
 import { forkJoin } from 'rxjs';
-import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
 import { UserPreferences } from '../../core/models/user-preference';
+import { ApiErrorHandlerService } from '../../core/services/common/api-error-handler.service';
+import { NotificationService } from '../../core/services/common/notification.service';
+import { BasicFeeService } from '../../core/services/service-provider/basic-fee.service';
 
 @Component({
   selector: 'app-basic-fee',
@@ -43,13 +42,12 @@ export class BasicFeeComponent {
   @Input() spid: number = 0;
   @Output() hasBasicFees = new EventEmitter<boolean>();
 
-  constructor(
-    private fb: FormBuilder,
-    private basicFeeService: BasicFeeService,
-    private notificationService: NotificationService,
-    private dialog: MatDialog,
-    private errorHandler: ApiErrorHandlerService
-  ) {
+  private fb = inject(FormBuilder);
+  private basicFeeService = inject(BasicFeeService);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
+
+  constructor() {
     this.feeForm = this.fb.group({
       startCarnetValue: [0, [Validators.required, Validators.min(0)]],
       endCarnetValue: [null, [Validators.min(0)]],

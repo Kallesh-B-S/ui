@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { UserService } from './user.service';
 import { StorageService } from './storage.service';
@@ -14,13 +14,12 @@ import { ApiErrorHandlerService } from './api-error-handler.service';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient,
-    private userService: UserService,
-    private storageService: StorageService,
-    private router: Router,
-    private notificationService: NotificationService,
-    private errorHandler: ApiErrorHandlerService
-  ) { }
+  private http = inject(HttpClient);
+  private userService = inject(UserService);
+  private storageService = inject(StorageService);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
+  private errorHandler = inject(ApiErrorHandlerService);
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { p_emailaddr: username, p_password: password });

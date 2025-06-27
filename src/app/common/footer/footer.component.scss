@@ -1,11 +1,11 @@
-@import 'colors';
+@use 'colors' as colors;
 
 .footer {
-    background-color: $background-header;
+    background-color: colors.$background-header;
     padding: 8px;
-    border-top: 1px solid $divider-color;
+    border-top: 1px solid colors.$divider-color;
     backdrop-filter: blur(10px);
-    background-color: rgba($background-header, 0.9);
+    background-color: rgba(colors.$background-header, 0.9);
 
     /* Fixed footer styles */
     position: fixed;
@@ -29,18 +29,18 @@
         gap: 24px;
 
         a {
-            color: $text-secondary;
+            color: colors.$text-secondary;
             text-decoration: none;
             transition: color 0.3s ease;
 
             &:hover {
-                color: $primary-color;
+                color: colors.$primary-color;
             }
         }
     }
 
     .copyright {
-        color: $text-secondary;
+        color: colors.$text-secondary;
         font-size: 12px;
     }
 }
