@@ -78,6 +78,12 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "localhost",
+              "policy.alphaomegainfosys.com"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "carnet-portal-app:build:production"

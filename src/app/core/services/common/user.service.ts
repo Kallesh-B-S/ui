@@ -13,6 +13,7 @@ export class UserService {
   private apiDb = environment.apiDb;
 
   private spid: number = 0;
+  private clientid: number = 0;
 
   userDetailsSignal = signal<User>({});
 
@@ -106,6 +107,16 @@ export class UserService {
     return this.spid;
   }
 
+  getUserClientid(): number {
+    if (this.clientid === 0) {
+      const userDetails = this.getUserDetails();
+      if (userDetails && userDetails.userDetails && userDetails.userDetails.clientid) {
+        this.clientid = userDetails.userDetails.clientid;
+      }
+    }
+    return this.clientid;
+  }
+
   private mapToUser(data: any): User {
     return {
       roles: data.roleDetails || null,
@@ -129,6 +140,7 @@ export class UserService {
 
     return {
       spid: userDetails.SPID,
+      clientid: userDetails.CLIENTID,
       urlKey: userDetails.ENCURLKEY,
       logoName: userDetails.LOGONAME,
       themeName: userDetails.THEMENAME
