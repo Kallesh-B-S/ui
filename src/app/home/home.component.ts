@@ -14,6 +14,7 @@ import { CarnetStatus } from '../core/models/carnet-status';
 import { ApiErrorHandlerService } from '../core/services/common/api-error-handler.service';
 import { CommonService } from '../core/services/common/common.service';
 import { NotificationService } from '../core/services/common/notification.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-home',
@@ -103,6 +104,40 @@ export class HomeComponent {
   }
 
   exportData() {
+    try {
+      // Prepare worksheet data
+      const worksheetData = this.prepareDownloadData();
+
+      // Create workbook and worksheet
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Carnet Data');
+
+      // Generate Excel file
+      const fileName = `carnet_data_${new Date().toISOString()}.xlsx`;
+      XLSX.writeFile(workbook, fileName);
+    } catch (error) {
+      console.error('Error downloading goods items:', error);
+      this.notificationService.showError('Failed to download Excel file');
+    }
+  }
+
+  prepareDownloadData(): any[] {
+    return this.dataSource.data.map(item => ({
+      'Application Name': item.applicationName,
+      'Holder Name': item.holderName,
+      'Carnet Number': item.carnetNumber,
+      'US Sets': item.usSets,
+      'Foreign Sets': item.foreignSets,
+      'Transit Sets': item.transitSets,
+      'Carnet Value': item.carnetValue,
+      'Issue Date': item.issueDate ? new Date(item.issueDate).toLocaleDateString() : '',
+      'Expiry Date': item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : '',
+      'Order Type': item.orderType,
+      'Carnet Status': this.getCarnetStatusLabel(item.carnetStatus)
+    }));
   }
 
   getCarnetStatusLabel(value: string): string {

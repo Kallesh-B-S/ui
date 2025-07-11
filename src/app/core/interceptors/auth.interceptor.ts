@@ -7,6 +7,7 @@ import { AuthService } from '../services/common/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private excludedUrls = ['/register', '/forgot-password'];
 
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -16,6 +17,11 @@ export class AuthInterceptor implements HttpInterceptor {
   private authService = inject(AuthService);
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    // Add withCredentials to all requests except excluded URLs
+    if (this.excludedUrls.some(url => request.url.includes(url))) {
+      return next.handle(request);
+    }
 
     // Add withCredentials to all requests
     request = request.clone({

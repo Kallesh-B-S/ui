@@ -6,9 +6,13 @@ import { AddServiceProviderComponent } from './service-provider/add/add-service-
 import { EditServiceProviderComponent } from './service-provider/edit/edit-service-provider.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { RegisterComponent } from './register/register.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'usersettings', component: UserSettingsComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'service-provider/:id', component: EditServiceProviderComponent, canActivate: [AuthGuard] },

@@ -26,8 +26,12 @@
                 </mat-error>
             </mat-form-field>
 
-            <div class="forgot-password">
-                <a href="#" class="forgot-link">Forgot your password?</a>
+            <div class="additional-options">
+                <a href="#" routerLink="/forgot-password" class="additional-options-link">Forgot your password?</a>
+            </div>
+
+            <div class="additional-options">
+                <a href="#" routerLink="/register" class="additional-options-link">New User? Register</a>
             </div>
 
             <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">

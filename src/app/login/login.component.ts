@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from '../shared/module/angular-material.module';
 import { User } from '../core/models/user';
 import { UserService } from '../core/services/common/user.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, AngularMaterialModule],
+  imports: [ReactiveFormsModule, CommonModule, AngularMaterialModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

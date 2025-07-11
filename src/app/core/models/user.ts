@@ -13,6 +13,7 @@ export interface Menu {
 export interface UserDetail {
     spid: number;
     clientid: number;
+    locationid: number;
     urlKey: string;
     logoName: string;
     themeName: string;

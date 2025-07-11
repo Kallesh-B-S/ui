@@ -12,9 +12,6 @@ export class UserService {
   private apiUrl = environment.apiUrl;
   private apiDb = environment.apiDb;
 
-  private spid: number = 0;
-  private clientid: number = 0;
-
   userDetailsSignal = signal<User>({});
 
   private readonly USER_EMAIL_KEY = 'CurrentUserEmail';
@@ -98,23 +95,18 @@ export class UserService {
   }
 
   getUserSpid(): number {
-    if (this.spid === 0) {
-      const userDetails = this.getUserDetails();
-      if (userDetails && userDetails.userDetails && userDetails.userDetails.spid) {
-        this.spid = userDetails.userDetails.spid;
-      }
-    }
-    return this.spid;
+    const userDetails = this.getUserDetails();
+    return userDetails?.userDetails?.spid ?? 0;
   }
 
   getUserClientid(): number {
-    if (this.clientid === 0) {
-      const userDetails = this.getUserDetails();
-      if (userDetails && userDetails.userDetails && userDetails.userDetails.clientid) {
-        this.clientid = userDetails.userDetails.clientid;
-      }
-    }
-    return this.clientid;
+    const userDetails = this.getUserDetails();
+    return userDetails?.userDetails?.clientid ?? 0;
+  }
+
+  getUserLocationid(): number {
+    const userDetails = this.getUserDetails();
+    return userDetails?.userDetails?.locationid ?? 0;
   }
 
   private mapToUser(data: any): User {
@@ -141,6 +133,7 @@ export class UserService {
     return {
       spid: userDetails.SPID,
       clientid: userDetails.CLIENTID,
+      locationid: userDetails.LOCATIONID,
       urlKey: userDetails.ENCURLKEY,
       logoName: userDetails.LOGONAME,
       themeName: userDetails.THEMENAME

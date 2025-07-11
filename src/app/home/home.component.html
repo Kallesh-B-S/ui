@@ -17,6 +17,13 @@
                 <mat-spinner diameter="50"></mat-spinner>
             </div>
 
+            <div class="table-actions">
+                <button mat-raised-button color="accent" (click)="exportData()" *ngIf="dataSource.data.length > 0"
+                    matTooltip="Export to Excel" [disabled]="dataSource.data.length === 0">
+                    <mat-icon>download</mat-icon> Export
+                </button>
+            </div>
+
             <div class="table-container mat-elevation-z8" *ngIf="showTable">
                 <table mat-table [dataSource]="dataSource" matSort>
                     <ng-container matColumnDef="applicationName">

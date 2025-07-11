@@ -1,0 +1,76 @@
+<div class="registration-container">
+    <div class="registration-card">
+        <h3 class="subtitle">User Registration</h3>
+
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" required>
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="email?.errors?.['required']">
+                    Email is required
+                </mat-error>
+                <mat-error *ngIf="email?.errors?.['email']">
+                    Please enter a valid email
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+                <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="password?.errors?.['required']">
+                    Password is required
+                </mat-error>
+                <mat-error *ngIf="password?.errors?.['minlength']">
+                    Password must be at least 8 characters
+                </mat-error>
+                <mat-error *ngIf="password?.errors?.['pattern']">
+                    Password must contain at least one uppercase letter, one lowercase letter, one number, and one
+                    special character
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Confirm Password</mat-label>
+                <input matInput formControlName="confirmPassword" [type]="hidePassword ? 'password' : 'text'" required>
+                <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="confirmPassword?.errors?.['required']">
+                    Please confirm your password
+                </mat-error>
+                <mat-error *ngIf="registrationForm.errors?.['mismatch'] && confirmPassword?.touched">
+                    Passwords do not match
+                </mat-error>
+            </mat-form-field>
+
+            <div class="login">
+                <a href="#" routerLink="/login" class="login-link">Already have an account? Login</a>
+            </div>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid || isLoading">
+                <span *ngIf="!isLoading">Register</span>
+                <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            </button>
+
+        </form>
+    </div>
+
+    <div class="info-section">
+        <h3>ATA Carnet</h3>
+        <p>
+            Also known as the "Merchandise Passport," is an international customs document that simplifies temporary
+            exports to over 79 countries and territories.
+            It allows businesses to explore new markets, showcase products at trade shows, and attend global conferences
+            without paying duties or taxes.
+        </p>
+        <p>
+            It simplifies customs procedures for the temporary movement of goods and allows goods to
+            enter Customs territories of the ATA Carnet system free of customs duties and taxes for up to
+            one year.
+        </p>
+    </div>
+</div>

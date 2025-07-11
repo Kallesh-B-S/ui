@@ -10,6 +10,15 @@
         }
     }
 
+    .table-actions {
+        display: flex;
+        justify-content: end;
+
+        button {
+            margin-bottom: 16px;
+        }
+    }
+
     .table-container {
         position: relative;
         overflow: auto;
