@@ -44,41 +44,46 @@ export class LoginComponent {
 
       const { username, password } = this.loginForm.value;
 
-      this.authService.login(username, password).subscribe({
-        next: (response) => {
-          if (response?.message) {
-            this.userService.setUser(response?.email);
-            this.setUserData();
-          } else {
-            this.errorMessage = response?.error ?? response?.message;
-          }
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = 'Invalid username or password';
-          console.error('Login error:', error);
-        }
-      });
+      // this.authService.login(username, password).subscribe({
+      //   next: (response) => {
+      //     if (response?.message) {
+      //       this.userService.setUser(response?.email);
+      //       this.setUserData();
+      //     } else {
+      //       this.errorMessage = response?.error ?? response?.message;
+      //     }
+      //   },
+      //   error: (error) => {
+      //     this.isLoading = false;
+      //     this.errorMessage = 'Invalid username or password';
+      //     console.error('Login error:', error);
+      //   }
+      // });
+
+      this.userService.setUser(username);
+      this.setUserData();
     }
   }
 
 
   setUserData() {
 
-    this.userService.setUserDetails().subscribe({
-      next: (data: User) => {
-        if (data?.userDetails) {
-          this.navigationService.navigate(['home']);
-        } else {
-          this.errorMessage = "User doesn't have permissions.";
-          this.isLoading = false;
-        }
-      },
-      error: (error: any) => {
-        this.isLoading = false;
-        this.errorMessage = "User doesn't have permissions.";
-        console.error('Error retrieving app data:', error);
-      }
-    });
+    // this.userService.setUserDetails().subscribe({
+    //   next: (data: User) => {
+    //     if (data?.userDetails) {
+    //       this.navigationService.navigate(['home']);
+    //     } else {
+    //       this.errorMessage = "User doesn't have permissions.";
+    //       this.isLoading = false;
+    //     }
+    //   },
+    //   error: (error: any) => {
+    //     this.isLoading = false;
+    //     this.errorMessage = "User doesn't have permissions.";
+    //     console.error('Error retrieving app data:', error);
+    //   }
+    // });
+
+    this.navigationService.navigate(['home']);
   }
 }
