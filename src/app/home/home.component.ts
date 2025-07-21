@@ -54,8 +54,8 @@ export class HomeComponent {
   }
 
   ngOnInit(): void {
-    this.loadCarnetStatuses();
-    this.loadCarnetData();
+    // this.loadCarnetStatuses();
+    // this.loadCarnetData();
   }
 
   loadCarnetStatuses(): void {

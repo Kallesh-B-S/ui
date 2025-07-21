@@ -8,13 +8,15 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ParamTableComponent } from './param-table/param-table.component';
+import { ParamTableComponent } from './param/table/param-table.component';
+import { ManageTableRecordComponent } from './param/manage-table-record/manage-table-record.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'param-table', component: ParamTableComponent },
+  { path: 'table-record', component: ManageTableRecordComponent },
+  { path: 'param-record/:id', component: ManageTableRecordComponent },
   { path: 'usersettings', component: UserSettingsComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'service-provider/:id', component: EditServiceProviderComponent, canActivate: [AuthGuard] },
