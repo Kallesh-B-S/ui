@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { UserService } from "../common/user.service";
-import { ParamValue } from "../../models/param/paramValue";
+import { ParamTableForm, ParamValue, ParamValueForm } from "../../models/param/paramValue";
 import { map, Observable } from "rxjs";
 
 @Injectable({
@@ -41,5 +41,79 @@ export class ParamService {
             lastupdatedby: paramValue.lastupdatedby,
             lastupdateddate: paramValue.lastupdateddate
         }))
+    }
+
+    CreateTableRecord(data: ParamTableForm): Observable<any> {
+
+        const paramDetails = {
+            P_TABLEFULLDESC: data.P_TABLEFULLDESC,
+            P_USERID: this.userService.getUser(),
+        };
+
+        return this.http.post(`${this.apiUrl}/${this.apiDb}/CreateTableRecord`, paramDetails);
+    }
+
+    CreateParamRecord(data: ParamValueForm): Observable<any> {
+
+        const paramDetails = {
+            p_spid: this.userService.getUserSpid(),
+            P_PARAMTYPE: data.P_PARAMTYPE,
+            P_PARAMDESC: data.P_PARAMDESC,
+            P_PARAMVALUE: data.P_PARAMVALUE,
+            P_ADDLPARAMVALUE1: data.P_ADDLPARAMVALUE1,
+            P_ADDLPARAMVALUE2: data.P_ADDLPARAMVALUE2,
+            P_ADDLPARAMVALUE3: data.P_ADDLPARAMVALUE3,
+            P_ADDLPARAMVALUE4: data.P_ADDLPARAMVALUE4,
+            P_ADDLPARAMVALUE5: data.P_ADDLPARAMVALUE5,
+            P_SORTSEQ: data.P_SORTSEQ,
+            P_USERID: this.userService.getUser(),
+        };
+
+        return this.http.post(`${this.apiUrl}/${this.apiDb}/CreateParamRecord`, paramDetails);
+    }
+
+    UpdateParamRecord(data: ParamValueForm): Observable<any> {
+
+        const paramDetails = {
+            P_SPID: this.userService.getUserSpid(),
+            P_PARAMID: data.P_PARAMID,
+            P_PARAMDESC: data.P_PARAMDESC,
+            P_ADDLPARAMVALUE1: data.P_ADDLPARAMVALUE1,
+            P_ADDLPARAMVALUE2: data.P_ADDLPARAMVALUE2,
+            P_ADDLPARAMVALUE3: data.P_ADDLPARAMVALUE3,
+            P_ADDLPARAMVALUE4: data.P_ADDLPARAMVALUE4,
+            P_ADDLPARAMVALUE5: data.P_ADDLPARAMVALUE5,
+            P_SORTSEQ: data.P_SORTSEQ,
+            P_USERID: this.userService.getUser(),
+        };
+
+        return this.http.patch(`${this.apiUrl}/${this.apiDb}/UpdateParamRecord`, paramDetails);
+    }
+
+    InActivateParamRecord() { }
+
+    ReActivateParamRecord() { }
+
+    updateBasicDetails(id: number, data: any): Observable<any> {
+
+        const basicDetails = {
+            p_spid: id,
+            p_name: data.companyName,
+            p_lookupcode: data.lookupCode,
+            p_address1: data.address1,
+            p_address2: data.address2,
+            p_city: data.city,
+            p_state: data.state,
+            p_zip: data.zip,
+            p_country: data.country,
+            p_issuingregion: data.issuingRegion,
+            p_replacementregion: data.replacementRegion,
+            p_bondsurety: data.bondSurety,
+            p_cargopolicyno: data.cargoPolicyNo,
+            p_cargosurety: data.cargoSurety,
+            p_user_id: this.userService.getUser(),
+        }
+
+        return this.http.put(`${this.apiUrl}/${this.apiDb}/UpdateServiceProvider`, basicDetails);
     }
 }

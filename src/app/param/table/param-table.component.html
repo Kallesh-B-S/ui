@@ -1,4 +1,4 @@
-<h2 class="page-header">Manage Param - Table Records</h2>
+<h2 class="page-header">Manage Param - {{paramHeading}}</h2>
 
 <div class="results-section">
     <div class="loading-shade" *ngIf="isLoading">
@@ -10,7 +10,7 @@
             <div class="icon-text">Show Inactive Records</div>
         </mat-slide-toggle>
 
-        <button mat-raised-button color="primary">
+        <button mat-raised-button color="primary" (click)="addNewParam()">
             <mat-icon>add</mat-icon>
             Add New Record
         </button>
@@ -66,14 +66,14 @@
             <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
             <td mat-cell *matCellDef="let client" class="actions-cell" style="text-align: center;">
                 <button mat-icon-button color="primary" *ngIf="table_mode === 'TABLE-RECORD'"
-                    (click)="onRecordClick(client?.paramvalue)" [matTooltip]="client.ParamDesc">
+                    (click)="onRecordClick(client?.paramvalue, client?.ParamDesc)" [matTooltip]="client.ParamDesc">
                     <!-- <mat-icon>edit</mat-icon> -->
                     <mat-icon>chevron_right</mat-icon>
                     <!-- <mat-icon>arrow_forward</mat-icon> -->
                 </button>
 
-                <button mat-icon-button color="primary" *ngIf="table_mode === 'PARAM-RECORD'" (click)="onEditParam()"
-                    [matTooltip]="client.ParamDesc">
+                <button mat-icon-button color="primary" *ngIf="table_mode === 'PARAM-RECORD'"
+                    (click)="onEditParam(client)" [matTooltip]="'edit'">
                     <mat-icon>edit</mat-icon>
                 </button>
 
@@ -111,115 +111,114 @@
 
     <!-- Contact Form -->
     <div class="form-container" *ngIf="showForm">
-        <form [formGroup]="contactForm" (ngSubmit)="saveContact()">
+        <form [formGroup]="paramForm" (ngSubmit)="saveRecord()">
             <div class="form-header">
-                <h3>{{ isEditing ? 'Edit Contact' : 'Add New Contact' }}</h3>
+                <h3>{{ table_mode === 'TABLE-RECORD' ? 'Add New Table' : isEditing ? 'Edit Param' : 'Add New Param' }}
+                </h3>
             </div>
 
             <div class="form-row">
-                <mat-form-field appearance="outline">
-                    <mat-label>First Name</mat-label>
-                    <input matInput formControlName="firstName" required>
-                    <mat-icon matSuffix>person</mat-icon>
-                    <mat-error *ngIf="contactForm.get('firstName')?.errors?.['required']">
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Param Type</mat-label>
+                    <input matInput formControlName="paramType" readonly required>
+                    <!-- <mat-icon matSuffix>person</mat-icon> -->
+                    <mat-error *ngIf="paramForm.get('paramType')?.errors?.['required']">
                         First name is required
                     </mat-error>
-                    <mat-error *ngIf="contactForm.get('firstName')?.errors?.['maxlength']">
+                    <mat-error *ngIf="paramForm.get('paramType')?.errors?.['maxlength']">
                         Maximum 50 characters allowed
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="small-field">
-                    <mat-label>Middle Initial</mat-label>
-                    <input matInput formControlName="middleInitial" maxlength="1">
-                    <mat-error *ngIf="contactForm.get('middleInitial')?.errors?.['maxlength']">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{table_mode === 'TABLE-RECORD' ? 'Table Description' : 'Param Description'}}</mat-label>
+                    <input matInput formControlName="paramDescription" required>
+                    <mat-error *ngIf="paramForm.get('paramDescription')?.errors?.['maxlength']">
                         Only 1 character allowed
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Last Name</mat-label>
-                    <input matInput formControlName="lastName" required>
-                    <mat-icon matSuffix>person</mat-icon>
-                    <mat-error *ngIf="contactForm.get('lastName')?.errors?.['required']">
+
+            </div>
+
+            <div class="form-row">
+
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Param Value</mat-label>
+                    <input matInput formControlName="paramValue" [readonly]="isEditing"  required>
+                    <!-- <mat-icon matSuffix>person</mat-icon> -->
+                    <mat-error *ngIf="paramForm.get('paramValue')?.errors?.['required']">
                         Last name is required
                     </mat-error>
-                    <mat-error *ngIf="contactForm.get('lastName')?.errors?.['maxlength']">
+                    <mat-error *ngIf="paramForm.get('paramValue')?.errors?.['maxlength']">
                         Maximum 50 characters allowed
                     </mat-error>
                 </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Additional Param Value 1</mat-label>
+                    <input matInput formControlName="Additional_Param_Value1">
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value1')?.errors?.['maxlength']">
+                        Maximum 100 characters allowed
+                    </mat-error>
+                </mat-form-field>
             </div>
 
             <div class="form-row">
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Title</mat-label>
-                    <input matInput formControlName="title" required>
-                    <mat-icon matSuffix>work</mat-icon>
-                    <mat-error *ngIf="contactForm.get('title')?.errors?.['required']">
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Additional Param Value 2</mat-label>
+                    <input matInput formControlName="Additional_Param_Value2">
+                    <!-- <mat-icon matSuffix>person</mat-icon> -->
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value2')?.errors?.['required']">
+                        Last name is required
+                    </mat-error>
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value2')?.errors?.['maxlength']">
+                        Maximum 50 characters allowed
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Additional Param Value 3</mat-label>
+                    <input matInput formControlName="Additional_Param_Value3">
+                    <!-- <mat-icon matSuffix>work</mat-icon> -->
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value3')?.errors?.['required']">
                         Title is required
                     </mat-error>
-                    <mat-error *ngIf="contactForm.get('title')?.errors?.['maxlength']">
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value3')?.errors?.['maxlength']">
                         Maximum 100 characters allowed
                     </mat-error>
                 </mat-form-field>
             </div>
 
             <div class="form-row">
-                <mat-form-field appearance="outline">
-                    <mat-label>Phone</mat-label>
-                    <input matInput formControlName="phone" required>
-                    <mat-icon matSuffix>phone</mat-icon>
-                    <mat-error *ngIf="contactForm.get('phone')?.errors?.['required']">
-                        Phone is required
+
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Additional Param Value 4</mat-label>
+                    <input matInput formControlName="Additional_Param_Value4">
+                    <!-- <mat-icon matSuffix>person</mat-icon> -->
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value4')?.errors?.['required']">
+                        Last name is required
                     </mat-error>
-                    <mat-error *ngIf="contactForm.get('phone')?.errors?.['pattern']">
-                        Please enter a valid phone number (10-15 digits)
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value4')?.errors?.['maxlength']">
+                        Maximum 50 characters allowed
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Mobile</mat-label>
-                    <input matInput formControlName="mobile">
-                    <mat-icon matSuffix>smartphone</mat-icon>
-                    <mat-error *ngIf="contactForm.get('mobile')?.errors?.['required']">
-                        Mobile is required
+                <mat-form-field appearance="outline" *ngIf="table_mode === 'PARAM-RECORD'">
+                    <mat-label>Additional Param Value 5</mat-label>
+                    <input matInput formControlName="Additional_Param_Value5">
+                    <!-- <mat-icon matSuffix>work</mat-icon> -->
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value5')?.errors?.['required']">
+                        Title is required
                     </mat-error>
-                    <mat-error *ngIf="contactForm.get('mobile')?.errors?.['pattern']">
-                        Please enter a valid mobile number (10-15 digits)
-                    </mat-error>
-                </mat-form-field>
-            </div>
-
-            <div class="form-row">
-                <mat-form-field appearance="outline">
-                    <mat-label>Fax</mat-label>
-                    <input matInput formControlName="fax">
-                    <mat-icon matSuffix>fax</mat-icon>
-                    <mat-error *ngIf="contactForm.get('fax')?.errors?.['pattern']">
-                        Please enter a valid fax number (10-15 digits)
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" required>
-                    <mat-icon matSuffix>email</mat-icon>
-                    <mat-error *ngIf="contactForm.get('email')?.errors?.['required']">
-                        Email is required
-                    </mat-error>
-                    <mat-error *ngIf="contactForm.get('email')?.errors?.['email']">
-                        Please enter a valid email address
-                    </mat-error>
-                    <mat-error *ngIf="contactForm.get('email')?.errors?.['maxlength']">
+                    <mat-error *ngIf="paramForm.get('Additional_Param_Value5')?.errors?.['maxlength']">
                         Maximum 100 characters allowed
                     </mat-error>
                 </mat-form-field>
             </div>
-            <!-- 
-            <div class="form-row">
-                <mat-checkbox formControlName="defaultContact">Default Contact</mat-checkbox>
-            </div> -->
+
+
             <div *ngIf="isEditing" class="readonly-section">
                 <div class="readonly-fields">
                     <div class="field-column">
@@ -261,7 +260,7 @@
 
             <div class="form-actions">
                 <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
-                <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid">
+                <button mat-raised-button color="primary" type="submit" [disabled]="paramForm.invalid">
                     {{ isEditing ? 'Update' : 'Save' }}
                 </button>
             </div>
