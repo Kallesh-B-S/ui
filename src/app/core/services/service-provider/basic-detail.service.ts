@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BasicDetail } from '../../models/service-provider/basic-detail';
-import { filter, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { UserService } from '../common/user.service';
 
@@ -17,8 +17,7 @@ export class BasicDetailService {
 
   getBasicDetailsById(id: number): BasicDetail | any {
     return this.http.get<any[]>(`${this.apiUrl}/${this.apiDb}/GetSelectedServiceprovider/${id}`).pipe(
-      filter(response => response.length > 0),
-      map(response => this.mapToBasicDetail(response?.[0])));
+      map(response => this.mapToBasicDetail(response)));
   }
 
   private mapToBasicDetail(basicDetails: any): BasicDetail {
