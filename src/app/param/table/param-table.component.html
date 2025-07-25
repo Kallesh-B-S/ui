@@ -1,0 +1,264 @@
+<h2 class="page-header">Manage - {{paramHeading | properCase}}</h2>
+
+<div class="results-section">
+    <div class="loading-shade" *ngIf="isLoading">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <div class="search-bar">
+        <mat-form-field appearance="outline" floatLabel="auto" class="full-width">
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Search record..." />
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <div class="actions-bar" [ngClass]="{ 'mb-40': !isParamRecord, 'mb-10': isParamRecord }">
+        <mat-slide-toggle (change)="toggleShowInactiveData()" *ngIf="isParamRecord" [disabled]="paramData.length === 0">
+            <div class="icon-text">Show Inactive Records</div>
+        </mat-slide-toggle>
+
+        <button mat-raised-button color="primary" (click)="addNewParam()">
+            <mat-icon>add</mat-icon>
+            Add New Record
+        </button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="results-table" matSort>
+
+        <!-- PARAMTYPE Column -->
+        <ng-container matColumnDef="ParamType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+            <td mat-cell *matCellDef="let client">{{ client.paramType }}</td>
+        </ng-container>
+
+        <!-- PARAMDESC Column -->
+        <ng-container matColumnDef="ParamDesc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+            <td mat-cell *matCellDef="let client">{{ client.paramDesc || '--'}}</td>
+        </ng-container>
+
+        <!-- PARAMVALUE Column -->
+        <ng-container matColumnDef="paramvalue">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Value</th>
+            <td mat-cell *matCellDef="let client">{{ client.paramValue }}</td>
+        </ng-container>
+
+        <!-- ADDLPARAMVALUE1 Column -->
+        <ng-container matColumnDef="addlparamvalue1">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Additional Value 1</th>
+            <td mat-cell *matCellDef="let client">{{ client.addlParamValue1 || '--' }}</td>
+        </ng-container>
+
+        <!-- ADDLPARAMVALUE2 Column -->
+        <ng-container matColumnDef="addlparamvalue2">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Additional Value 2</th>
+            <td mat-cell *matCellDef="let client">{{ client.addlParamValue2 || '--'}}</td>
+        </ng-container>
+
+        <!-- ADDLPARAMVALUE3 Column -->
+        <ng-container matColumnDef="addlparamvalue3">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Additional Value 3</th>
+            <td mat-cell *matCellDef="let client">{{ client.addlParamValue3 || '--' }}</td>
+        </ng-container>
+
+        <!-- ADDLPARAMVALUE4 Column -->
+        <ng-container matColumnDef="addlparamvalue4">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Additional Value 4</th>
+            <td mat-cell *matCellDef="let client">{{ client.addlParamValue4 || '--' }}</td>
+        </ng-container>
+
+        <!-- ADDLPARAMVALUE5 Column -->
+        <ng-container matColumnDef="addlparamvalue5">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Additional Value 5</th>
+            <td mat-cell *matCellDef="let client">{{ client.addlParamValue5 || '--'}}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+            <td mat-cell *matCellDef="let client" class="actions-cell">
+                <div class="action-container">
+                    <button mat-icon-button color="primary" *ngIf="!isParamRecord"
+                        (click)="onRecordClick(client?.paramValue , client?.paramDesc )"
+                        [matTooltip]="client.paramDesc ">
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="primary" *ngIf="isParamRecord" (click)="onEditParam(client)"
+                        [matTooltip]="'edit'">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="warn"
+                        *ngIf="isParamRecord && (client.inactiveCodeFlag === 'N' || !client.inactiveCodeFlag)"
+                        matTooltip="Inactivate" (click)="inActivateParamRecord(client.paramId)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="warn" *ngIf="(isParamRecord) && client.inactiveCodeFlag === 'Y'"
+                        matTooltip="Reactivate" (click)="reActivateParamRecord(client.paramId)">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr matNoDataRow *matNoDataRow>
+            <td [attr.colspan]="displayedColumns.length" class="no-data-message">
+                <mat-icon>info</mat-icon>
+                <span>No records found matching your criteria</span>
+            </td>
+        </tr>
+    </table>
+
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[userPreferences.pageSize || 2]"
+        [hidePageSize]="true" showFirstLastButtons></mat-paginator>
+
+    <!-- Contact Form -->
+    <div class="form-container" *ngIf="showForm">
+        <form [formGroup]="paramForm" (ngSubmit)="saveRecord()">
+            <div class="form-header">
+                <h3>{{ !isParamRecord ? 'Add New Table' : isEditing ? 'Edit Param' : 'Add New Param' }}
+                </h3>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Param Type</mat-label>
+                    <input matInput formControlName="paramType" readonly required>
+                    <mat-error *ngIf="paramForm.get('paramType')?.errors?.['required']">
+                        Param Type is required
+                    </mat-error>
+                    <mat-error *ngIf="paramForm.get('paramType')?.errors?.['maxlength']">
+                        Maximum 10 characters allowed
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{!isParamRecord ? 'Description' : 'Description'}}</mat-label>
+                    <input matInput formControlName="paramDesc" required>
+                    <mat-error *ngIf="paramForm.get('paramDesc')?.errors?.['required']">
+                        {{!isParamRecord ? 'Table Description' : 'Param Description'}} is required
+                    </mat-error>
+                    <mat-error *ngIf="paramForm.get('paramDesc')?.errors?.['maxlength']">
+                        Maximum 100 characters allowed
+                    </mat-error>
+                </mat-form-field>
+
+
+            </div>
+
+            <div class="form-row">
+
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Value</mat-label>
+                    <input matInput formControlName="paramValue" [readonly]="isEditing" required>
+                    <mat-error *ngIf="paramForm.get('paramValue')?.errors?.['required']">
+                        Param Value is required
+                    </mat-error>
+                    <mat-error *ngIf="paramForm.get('paramValue')?.errors?.['maxlength']">
+                        Maximum 20 characters allowed
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Additional Value 1</mat-label>
+                    <input matInput formControlName="addlParamValue1">
+                    <mat-error *ngIf="paramForm.get('addlParamValue1')?.errors?.['maxlength']">
+                        Maximum 20 characters allowed
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Additional Value 2</mat-label>
+                    <input matInput formControlName="addlParamValue2">
+                    <mat-error *ngIf="paramForm.get('addlParamValue2')?.errors?.['maxlength']">
+                        Maximum 20 characters allowed
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Additional Value 3</mat-label>
+                    <input matInput formControlName="addlParamValue3">
+                    <mat-error *ngIf="paramForm.get('addlParamValue3')?.errors?.['maxlength']">
+                        Maximum 20 characters allowed
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Additional Value 4</mat-label>
+                    <input matInput formControlName="addlParamValue4">
+                    <mat-error *ngIf="paramForm.get('addlParamValue4')?.errors?.['maxlength']">
+                        Maximum 20 characters allowed
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" *ngIf="isParamRecord">
+                    <mat-label>Additional Value 5</mat-label>
+                    <input matInput formControlName="addlParamValue5">
+                    <mat-error *ngIf="paramForm.get('addlParamValue5')?.errors?.['maxlength']">
+                        Maximum 20 characters allowed
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+
+            <div *ngIf="isEditing" class="readonly-section">
+                <div class="readonly-fields">
+                    <div class="field-column">
+                        <!-- Last Changed By -->
+                        <div class="readonly-field">
+                            <label>Last Changed By</label>
+                            <div class="readonly-value">
+                                {{paramReadOnlyFields.lastChangedBy || 'N/A'}}
+                            </div>
+                        </div>
+                        <!-- Inactive status -->
+                        <div class="readonly-field">
+                            <label>Inactive Status </label>
+                            <div class="readonly-value">
+                                {{paramReadOnlyFields.isInactive === true ? 'Yes' : 'No' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-column">
+
+                        <!-- Last Changed Date -->
+                        <div class="readonly-field">
+                            <label>Last Changed Date</label>
+                            <div class="readonly-value">
+                                {{(paramReadOnlyFields.lastChangedDate | date:'mediumDate':'UTC') || 'N/A'}}
+                            </div>
+                        </div>
+
+                        <!-- Inactivated Date -->
+                        <div class="readonly-field">
+                            <label>Inactivated Date</label>
+                            <div class="readonly-value">
+                                {{(paramReadOnlyFields.inactivatedDate | date:'mediumDate':'UTC') || 'N/A'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button mat-raised-button color="primary" type="submit" [disabled]="paramForm.invalid">
+                    {{ isEditing ? 'Update' : 'Save' }}
+                </button>
+                <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
